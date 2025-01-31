@@ -1,9 +1,19 @@
-// import { useState } from "react";
-import { useGetBoards } from "../../hooks/useGetBoard";
+
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { MoonSvg, SunSvg, CirclePlusSvg } from "../Svg";
+import { getBoards } from "../../store/boards/boardsThunks";
+
+
 
 export const Sidebar = () => {
-  const { boards } = useGetBoards();
+
+  const dispatch = useAppDispatch();
+  const boards = useAppSelector(state => state.boards);
+
+  useEffect(() => {
+    dispatch(getBoards());
+  },[dispatch]);
 
   return (
     <aside className="aside">
