@@ -1,17 +1,18 @@
-
+import { useState } from "react";
 import { TasksList } from "./components/TasksList";
-import { Sidebar } from "./components/ui/Sidebar";
-
-
+import { Sidebar } from "./components/Sidebar";
+import { Board } from "./interfaces/types";
 
 function App() {
 
+  const [boardSelected, setBoardSelected] = useState<Board | null>(null);
+
   return (
     <div className="app">
-      <Sidebar />
-      <TasksList />        
+      <Sidebar setBoardSelected={setBoardSelected} />
+      <TasksList boardSelected={boardSelected} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

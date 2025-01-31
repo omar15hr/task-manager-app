@@ -60,6 +60,46 @@ main {
   padding-left: 10px;
 }
 
+.card-grid {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.task-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #1A1B1F;
+  cursor: pointer;
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+}
+
+.tag-item {
+  padding: 3px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #3762E4;
+  font-size: 10px;
+  width: 60px;
+}
+
+.task-img {
+  width: 100%;
+  border-radius: 10px;
+}
+
 @media (max-width: 800px) {
   .app {
     grid-template-columns: 200px 1fr;
