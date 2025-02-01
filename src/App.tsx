@@ -1,11 +1,18 @@
+import { useState } from "react";
+import Sidebar from "./components/sidebar/Sidebar";
+import TaskBoard from "./components/taskBoard/TaskBoard";
 
-function App() {
+export default function App() {
+  const [show, setShow] = useState(false);
+
+  const toggleSidebar = () => {
+    setShow(!show);
+  };
 
   return (
-    <div className="app">
-      
+    <div className="flex">
+      <Sidebar isOpen={show} toggleSidebar={toggleSidebar} />
+      <TaskBoard isSidebarOpen={show} />
     </div>
   );
 }
-
-export default App;
