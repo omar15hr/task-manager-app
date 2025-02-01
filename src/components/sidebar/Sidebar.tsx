@@ -29,7 +29,7 @@ export default function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
             <li>
               <div className="flex flex-row gap-3 items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-[#2A2D32] cursor-pointer">
                 <CirclePlusSvg size={26} />
-                <span>Add new board</span>
+                <span className="text-lg">Add new board</span>
               </div>
             </li>
           </ul>
