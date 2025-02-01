@@ -1,6 +1,6 @@
 export const TaskColumn = ({ status }: { status: string }) => {
   return (
-    <div className="flex flex-col gap-4 p-2 w-64 h-[calc(100vh-5rem)]">
+    <div className="flex flex-col gap-4 w-80 h-[calc(100vh-5rem)]">
       <div className="text-xl font-bold">{status}</div>
       <div className="bg-[#191B1F] rounded-xl p-4 h-24 cursor-pointer flex flex-col gap-5">
         <h4>Task 1</h4>

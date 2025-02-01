@@ -11,8 +11,8 @@ export default function TaskBoard({ isSidebarOpen }: ContentProps) {
         isSidebarOpen ? "ml-80" : "ml-16"
       }`}
     >
-      <div className="p-6 bg-[#2A2D32] h-[calc(100vh-2rem)] rounded-2xl">
-        <div className="flex flex-wrap gap-6 items-center justify-center">
+      <div className="p-3 bg-[#2A2D32] h-[calc(100vh-2rem)] rounded-2xl">
+        <div className="flex gap-6 p-3">
           {["Backlog", "In Progress", "In Review", "Completed"].map(
             (status) => (
               <TaskColumn key={status} status={status} />
