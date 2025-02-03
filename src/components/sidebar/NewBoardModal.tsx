@@ -104,7 +104,7 @@ export const NewBoardModal = ({
           <div className="flex justify-between mt-4 items-center">
             <button
               type="submit"
-              className="bg-[#007bff] h-8 rounded-4xl text-white w-40 flex flex-row gap-2 items-center justify-center"
+              className="bg-[#007bff] h-8 rounded-4xl cursor-pointer text-white w-40 flex flex-row gap-2 items-center justify-center"
             >
               <span>{isEditing ? "Save Changes" : "Create Board"}</span>
               <CheckSvg size={24} />
@@ -112,9 +112,9 @@ export const NewBoardModal = ({
             <button
               type="button"
               onClick={toggleModal}
-              className="flex items-center justify-center p-4 text-white border-2 border-[#3d4249] rounded-4xl h-8 w-32 hover:border-[#363b41]"
+              className="flex items-center cursor-pointer justify-center p-4 text-white border-2 border-[#3d4249] rounded-4xl h-8 w-32 hover:border-[#363b41]"
             >
-              Cancelar
+              Cancel
             </button>
           </div>
         </form>

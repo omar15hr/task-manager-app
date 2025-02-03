@@ -19,13 +19,13 @@ export const NewTaskModal = ({
   isEditing,
 }: Props) => {
   const [selectedTag, setSelectedTag] = useState<string>(tags[0]);
-  const [name, setName] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
   const { addTask, updatedTask } = useUserActions();
 
   useEffect(() => {
     if (isEditing && task) {
-      setName(task!.title);
+      setTitle(task!.title);
       setSelectedTag(task!.tags[0]);
     }
   }, [isEditing, task]);
@@ -39,7 +39,7 @@ export const NewTaskModal = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim()) return;
+    if (!title.trim()) return;
 
     const updatedData: Partial<TaskWithId> = {
       title: 'New Task',
@@ -74,50 +74,54 @@ export const NewTaskModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">{isEditing ? "Edit Board" : "New Board"}</h2>
+          <h2 className="text-2xl font-bold">Task Details</h2>
           <CloseSvg size={24} onClick={toggleModal} />
         </div>
+        <div className="flex flex-row items-center justify-center gap-3 border-2 border-[#3d4249] rounded-xl p-4 h-32">
+          <button className="bg-[#007bff] rounded-4xl h-[35px] w-[200px] cursor-pointer">Random Background</button>
+          <button className="bg-[#ce2828] rounded-4xl h-[35px] w-[100px] cursor-pointer">Remove</button>
+        </div>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Board name</label>
+          <label htmlFor="status" className="text-[#747c83]">Status</label>
           <input
             type="text"
-            name="name"
+            name="status"
             placeholder="e.g: Default Board"
-            value={name} 
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-4 rounded-2xl border-2 border-[#3d4249] my-3 focus:border-[#363b41]"
+            value={status} 
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full p-3 rounded-2xl border-2 border-[#3d4249] my-3 focus:border-[#363b41] text-sm"
           />
-          <div>
-            <h2 className="text-md">Logo</h2>
-            <div className="flex flex-wrap gap-3 p-4">
-              {tags.map((logo, index) => (
-                <img
-                  key={index}
-                  src={logo}
-                  alt="logo"
-                  className={`w-10 h-10 rounded-full hover:border-blue-500 border-4 cursor-pointer ${
-                    selectedTag === logo ? "border-4 border-blue-500" : ""
-                  }`}
-                  onClick={() => setSelectedTag(logo)}
-                />
-              ))}
-            </div>
-          </div>
+          <label htmlFor="name" className="text-[#747c83]">Tags</label>
+          <input
+            type="text"
+            name="tags"
+            placeholder="e.g: Default Board"
+            value={tags}
+            className="w-full p-3 rounded-2xl border-2 border-[#3d4249] my-3 focus:border-[#363b41] text-sm"
+          />
+          <label htmlFor="name" className="text-[#747c83]">Task Title</label>
+          <input
+            type="text"
+            name="title"
+            value={title} 
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full p-3 rounded-2xl border-2 border-[#3d4249] my-3 focus:border-[#363b41] text-sm"
+          />
 
           <div className="flex justify-between mt-4 items-center">
             <button
               type="submit"
-              className="bg-[#007bff] h-8 rounded-4xl text-white w-40 flex flex-row gap-2 items-center justify-center"
+              className="bg-[#007bff] cursor-pointer h-8 rounded-4xl text-white w-32 flex flex-row gap-2 items-center justify-center"
             >
-              <span>{isEditing ? "Save Changes" : "Create Board"}</span>
+              <span>{isEditing ? "Save" : "Save"}</span>
               <CheckSvg size={24} />
             </button>
             <button
               type="button"
               onClick={toggleModal}
-              className="flex items-center justify-center p-4 text-white border-2 border-[#3d4249] rounded-4xl h-8 w-32 hover:border-[#363b41]"
+              className="flex items-center cursor-pointer justify-center p-4 text-white border-2 border-[#3d4249] rounded-4xl h-8 w-32 hover:border-[#363b41]"
             >
-              Cancelar
+              Cancel
             </button>
           </div>
         </form>
