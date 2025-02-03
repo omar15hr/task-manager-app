@@ -1,17 +1,13 @@
 export interface Board {
+  id:    string;
   name:  string;
   emoji: string;
   color: string;
-  id:    number;
-  link:  string;
-}
-export interface BoardData {
-  id:    number;
   tasks: Task[];
 }
 
 export interface Task {
-  id:         number;
+  id:         string;
   title:      string;
   status:     string;
   background: null | string;
