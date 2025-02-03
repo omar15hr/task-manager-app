@@ -1,4 +1,5 @@
 export type BoardId = string;
+export type TaskId = string;
 
 export interface Board {
   name:  string;
@@ -12,9 +13,12 @@ export interface BoardWithId extends Board {
 }
 
 export interface Task {
-  id:         string;
   title:      string;
   status:     string;
   background: null | string;
   tags:       string[];
+}
+
+export interface TaskWithId extends Task {
+  id: TaskId;
 }

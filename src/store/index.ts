@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import boardsReducer from "./boards/boardSlice";
+import tasksReducer from "./tasks/taskSlice";
 
 const persistanceMiddleware = (store) => (next) => (action) => {
  next(action);
@@ -9,9 +10,11 @@ const persistanceMiddleware = (store) => (next) => (action) => {
 export const store = configureStore({
   reducer: {
     boards: boardsReducer,
+    tasks: tasksReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(persistanceMiddleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+
