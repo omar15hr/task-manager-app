@@ -19,7 +19,13 @@ const NewBoard = () => {
         <span className="text-lg">Add new board</span>
       </div>
 
-      {isVisible && <NewBoardModal setIsVisible={setIsVisible} toggleModal={toggleModal} />}
+      {isVisible && (
+        <NewBoardModal
+          setIsVisible={setIsVisible}
+          toggleModal={toggleModal}
+          isEditing={false}
+        />
+      )}
     </div>
   );
 };

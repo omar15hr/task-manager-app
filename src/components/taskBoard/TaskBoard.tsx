@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../hooks/store";
 import { TaskColumn } from "./TaskColumn";
-import { PlusSvg } from "../Svg";
+import NewTask from "./NewTask";
 
 interface ContentProps {
   isSidebarOpen: boolean;
@@ -44,10 +44,7 @@ export default function TaskBoard({ isSidebarOpen }: ContentProps) {
             tasks={completedTasks}
           />
         </div>
-        <button className="flex flex-row bg-[#BCD4FD] text-[#2849c2] p-2 rounded-xl w-48 gap-3 items-center justify-center">
-          <span>Add new task card</span>
-          <PlusSvg size={24} />
-        </button>
+       <NewTask />
       </div>
     </div>
   );
