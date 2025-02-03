@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Board } from "../../interfaces/types";
 
-const initialState: Board[] = [
+const DEFAULT_STATE = [
   {
     id: '1',
     name: "Default Board",
@@ -13,10 +13,22 @@ const initialState: Board[] = [
   }
 ];
 
+const initialState: Board[] = (() => {
+  const persistanceState = localStorage.getItem("boards");
+  if (persistanceState) {
+    return JSON.parse(persistanceState).boards;
+  }
+  return DEFAULT_STATE;
+})();
+
 export const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
+    addNewBoard: (state, action: PayloadAction<Board>) => {
+      const id = crypto.randomUUID();
+      return [...state, { ...action.payload, id }];
+    },
     deleteBoardById: (state, action: PayloadAction<string>) => {
       const id = action.payload;
       return state.filter((board) => board.id !== id);
@@ -26,4 +38,4 @@ export const boardSlice = createSlice({
 
 export default boardSlice.reducer;
 
-export const { deleteBoardById } = boardSlice.actions;
+export const { addNewBoard,deleteBoardById } = boardSlice.actions;

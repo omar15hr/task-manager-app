@@ -3,7 +3,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 import TaskBoard from "./components/taskBoard/TaskBoard";
 
 export default function App() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
 
   const toggleSidebar = () => {
     setShow(!show);
