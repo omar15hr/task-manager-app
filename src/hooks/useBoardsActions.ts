@@ -1,5 +1,5 @@
 import { Board, BoardId } from "../interfaces/types";
-import { addNewBoard, deleteBoardById } from "../store/boards/boardSlice";
+import { addNewBoard, deleteBoardById, updateBoardById } from "../store/boards/boardSlice";
 import { useAppDispatch } from "./store";
 
 export const useUserActions = () => {
@@ -13,5 +13,9 @@ export const useUserActions = () => {
     dispatch(deleteBoardById(id));
   };
 
-  return { addBoard, removeBoard };
+  const updatedBoard = (id: BoardId, updatedBoard: Partial<Board>) => {
+    dispatch(updateBoardById({ id, updatedBoard }));
+  };
+
+  return { addBoard, removeBoard, updatedBoard };
 };

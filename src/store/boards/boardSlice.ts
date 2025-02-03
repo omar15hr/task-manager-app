@@ -33,9 +33,18 @@ export const boardSlice = createSlice({
       const id = action.payload;
       return state.filter((board) => board.id !== id);
     },
+    updateBoardById: (state, action: PayloadAction<{ id: BoardId, updatedBoard: Partial<Board> }>) => {
+      const { id, updatedBoard } = action.payload;
+      return state.map((board) => {
+        if (board.id === id) {
+          return { ...board, ...updatedBoard };
+        }
+        return board;
+      });
+    },
   },
 });
 
 export default boardSlice.reducer;
 
-export const { addNewBoard,deleteBoardById } = boardSlice.actions;
+export const { addNewBoard,deleteBoardById, updateBoardById } = boardSlice.actions;

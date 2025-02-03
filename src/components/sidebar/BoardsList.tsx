@@ -3,8 +3,13 @@ import { useUserActions } from "../../hooks/useBoardsActions";
 import { useState } from "react";
 import { useAppSelector } from "../../hooks/store";
 
+import { BoardWithId } from "../../interfaces/types";
+import { NewBoardModal } from "./NewBoardModal";
+
 export const BoardsList = () => {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false); 
+  const [selectedBoard, setSelectedBoard] = useState<BoardWithId | null>(null);
   const boards = useAppSelector((state) => state.boards);
 
   const { removeBoard } = useUserActions();
@@ -21,6 +26,12 @@ export const BoardsList = () => {
   const handleCancelDelete = () => {
     setConfirmDeleteId(null);
   };
+
+  const openModalForEditing = (board: BoardWithId) => {
+    setSelectedBoard(board);
+    setIsModalVisible(true);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       {boards.map((board) => (
@@ -37,7 +48,7 @@ export const BoardsList = () => {
             <h1 className="text-[16px]">{board.name}</h1>
           </div>
           <div className="flex flex-row gap-3 w-1/4 justify-center">
-            <button>
+            <button onClick={() => openModalForEditing(board)}>
               <PencilSvg size={24} />
             </button>
             <button onClick={() => handleConfirmDelete(board.id)}>
@@ -62,6 +73,15 @@ export const BoardsList = () => {
             No
           </button>
         </div>
+      )}
+
+      {isModalVisible && selectedBoard && (
+        <NewBoardModal
+          setIsVisible={setIsModalVisible}
+          toggleModal={() => setIsModalVisible(false)}
+          board={selectedBoard}
+          isEditing={true}
+        />
       )}
     </div>
   );
