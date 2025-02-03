@@ -22,19 +22,18 @@ export const BoardsList = () => {
     setConfirmDeleteId(null);
   };
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {boards.map((board) => (
         <div
           key={board.id}
           className="flex flex-row gap-3 items-center justify-start rounded-4xl border-[#506FEA] border-solid border-2 p-2 cursor-pointer hover:border-[#3d56b6]"
         >
           <div className="flex flex-row gap-2 items-center w-3/4">
-            <span
-              className="p-2 rounded-full"
+            <img
+              className="p-1 rounded-full w-10 h-10"
               style={{ backgroundColor: board.color }}
-            >
-              {board.emoji}
-            </span>
+              src={board.emoji}
+            />
             <h1 className="text-[16px]">{board.name}</h1>
           </div>
           <div className="flex flex-row gap-3 w-1/4 justify-center">
@@ -48,7 +47,7 @@ export const BoardsList = () => {
         </div>
       ))}
       {confirmDeleteId && (
-        <div className="flex flex-row gap-3 items-center justify-center rounded-4xl p-2 bg-[#2A2D32]">
+        <div className="flex flex-row gap-3 items-center justify-center rounded-4xl p-2 bg-[#2A2D32] mt-2">
           <span className="text-white">Are you sure?</span>
           <button
             onClick={() => handleDeleteBoard(confirmDeleteId)}

@@ -1,6 +1,7 @@
 import { BaselineSvg, CloseSvg } from "../Svg";
+import { BoardsList } from "./BoardsList";
 import NewBoard from "./NewBoard";
-import { BoardsList } from "./BoardsLIst";
+
 
 interface SidebarProps {
   isOpen: boolean;

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Board } from "../../interfaces/types";
+import { Board, BoardId, BoardWithId } from "../../interfaces/types";
 
 const DEFAULT_STATE = [
   {
     id: '1',
     name: "Default Board",
-    emoji: "🛠️",
+    emoji: "../../assets/emojis/board-logo-01.png",
     color: "#F8D8B0",
     tasks: [
       { id: '1', title: "Default Task", status: "Backlog", background: '#F8D8B0', tags: ["technical", "front-end"] },
@@ -13,7 +13,7 @@ const DEFAULT_STATE = [
   }
 ];
 
-const initialState: Board[] = (() => {
+const initialState: BoardWithId[] = (() => {
   const persistanceState = localStorage.getItem("boards");
   if (persistanceState) {
     return JSON.parse(persistanceState).boards;
@@ -29,7 +29,7 @@ export const boardSlice = createSlice({
       const id = crypto.randomUUID();
       return [...state, { ...action.payload, id }];
     },
-    deleteBoardById: (state, action: PayloadAction<string>) => {
+    deleteBoardById: (state, action: PayloadAction<BoardId>) => {
       const id = action.payload;
       return state.filter((board) => board.id !== id);
     },

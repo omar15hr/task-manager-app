@@ -1,4 +1,4 @@
-import { Board } from "../interfaces/types";
+import { Board, BoardId } from "../interfaces/types";
 import { addNewBoard, deleteBoardById } from "../store/boards/boardSlice";
 import { useAppDispatch } from "./store";
 
@@ -9,7 +9,7 @@ export const useUserActions = () => {
     dispatch(addNewBoard(board));
   };
 
-  const removeBoard = (id: string) => {
+  const removeBoard = (id: BoardId) => {
     dispatch(deleteBoardById(id));
   };
 
