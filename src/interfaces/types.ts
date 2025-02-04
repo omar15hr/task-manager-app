@@ -17,6 +17,7 @@ export interface Task {
   status:     string;
   background: null | string;
   tags:       string[];
+  boardId:    BoardId;
 }
 
 export interface TaskWithId extends Task {

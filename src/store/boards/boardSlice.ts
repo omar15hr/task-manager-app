@@ -1,17 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Board, BoardId, BoardWithId } from "../../interfaces/types";
 
-const DEFAULT_STATE = [
-  {
-    id: '1',
-    name: "Default Board",
-    emoji: "../../assets/emojis/board-logo-01.png",
-    color: "#F8D8B0",
-    tasks: [
-      { id: '1', title: "Default Task", status: "Backlog", background: '#F8D8B0', tags: ["technical", "front-end"] },
-    ],
-  }
-];
+const DEFAULT_STATE: {
+  boards: BoardWithId[];
+  selectedBoardId: BoardId | null;
+} = {
+  boards: [
+    {
+      id: "1",
+      name: "Development",
+      emoji: "💻",
+      color: "#ff5733",
+      tasks: [],
+    },
+  ],
+  selectedBoardId: "1",
+};
 
 const initialState: BoardWithId[] = (() => {
   const persistanceState = localStorage.getItem("boards");
@@ -33,7 +37,10 @@ export const boardSlice = createSlice({
       const id = action.payload;
       return state.filter((board) => board.id !== id);
     },
-    updateBoardById: (state, action: PayloadAction<{ id: BoardId, updatedBoard: Partial<Board> }>) => {
+    updateBoardById: (
+      state,
+      action: PayloadAction<{ id: BoardId; updatedBoard: Partial<Board> }>
+    ) => {
       const { id, updatedBoard } = action.payload;
       return state.map((board) => {
         if (board.id === id) {
@@ -47,4 +54,5 @@ export const boardSlice = createSlice({
 
 export default boardSlice.reducer;
 
-export const { addNewBoard,deleteBoardById, updateBoardById } = boardSlice.actions;
+export const { addNewBoard, deleteBoardById, updateBoardById } =
+  boardSlice.actions;
