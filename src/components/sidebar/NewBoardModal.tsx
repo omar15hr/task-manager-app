@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import logos from "../../assets/emojis/logos.ts";
-import { useUserActions } from "../../hooks/useBoardsActions.ts";
+import { useBoardsActions } from "../../hooks/useBoardsActions.ts";
 import { CheckSvg, CloseSvg } from "../Svg.tsx";
 import { Board, BoardWithId } from "../../interfaces/types.ts";
 
@@ -20,7 +20,7 @@ export const NewBoardModal = ({
   const [selectedEmoji, setSelectedEmoji] = useState<string>(logos[0]);
   const [name, setName] = useState<string>("");
 
-  const { addBoard, updatedBoard } = useUserActions();
+  const { addBoard, updatedBoard } = useBoardsActions();
 
   useEffect(() => {
     if (isEditing && board) {

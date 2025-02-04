@@ -2,7 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { BoardWithId } from "../../interfaces/types";
 import { CSS } from "@dnd-kit/utilities";
 import { PencilSvg, TrashSvg } from "../Svg";
-import { useUserActions } from "../../hooks/useBoardsActions";
+import { useBoardsActions } from "../../hooks/useBoardsActions";
 
 interface BoardProps {
   board: BoardWithId;
@@ -14,7 +14,7 @@ interface BoardProps {
 export function BoardContainer({ board, handleBoardId, selectedBoardId, openEditModal  }: BoardProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: board.id });
-  const { removeBoard } = useUserActions();
+  const { removeBoard } = useBoardsActions();
 
   const style = { transform: CSS.Transform.toString(transform), transition };
 

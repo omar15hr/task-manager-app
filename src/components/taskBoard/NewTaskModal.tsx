@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useUserActions } from "../../hooks/useTasksActions.ts";
+import { useTasksActions } from "../../hooks/useTasksActions.ts";
 import { CheckSvg, CloseSvg } from "../Svg.tsx";
 import { Task } from "../../interfaces/types.ts";
 import { DropDownStatus } from "./DropDownStatus.tsx";
@@ -10,6 +10,7 @@ interface Props {
   toggleModal: () => void;
   task?: Task;
   isEditing: boolean;
+  boardId: string;
 }
 
 const tags = ["concept", "technical", "front-end", "design"];
@@ -20,17 +21,19 @@ export const NewTaskModal = ({
   toggleModal,
   task,
   isEditing,
+  boardId,
 }: Props) => {
   const [selectedTag, setSelectedTag] = useState<string>(tags[0]);
   const [status, setStatus] = useState<string>(statuses[0]);
   const [title, setTitle] = useState<string>("");
 
-  const { addTask, updatedTask } = useUserActions();
+  const { addTask, updatedTask } = useTasksActions();
 
   useEffect(() => {
     if (isEditing && task) {
       setTitle(task!.title);
       setSelectedTag(task!.tags[0]);
+      setStatus(task.status);
     }
   }, [isEditing, task]);
 
@@ -62,7 +65,7 @@ export const NewTaskModal = ({
         background: "",
         status,
       };
-      addTask(newTask);
+      addTask(boardId, newTask); 
     }
 
     setIsVisible(false);

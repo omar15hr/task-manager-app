@@ -1,13 +1,13 @@
 import { Task, TaskId } from "../interfaces/types";
-import { addNewTask, deleteTaskById, updateTaskById } from "../store/tasks/taskSlice";
+import { addNewTask, deleteTaskById, updateTaskById, updateTaskNewOrder } from "../store/tasks/taskSlice";
 import { useAppDispatch } from "./store";
 
-export const useUserActions = () => {
+export const useTasksActions = () => {
   const dispatch = useAppDispatch();
 
-  const addTask = (board: Task) => {
-    dispatch(addNewTask(board));
-  };
+  const addTask = (boardId: string, task: Task) => {
+    dispatch(addNewTask({ boardId, task }));
+  };  
 
   const removeTask = (id: TaskId) => {
     dispatch(deleteTaskById(id));
@@ -17,5 +17,10 @@ export const useUserActions = () => {
     dispatch(updateTaskById({ id, updatedTask: updatedBoard }));
   };
 
-  return { addTask, removeTask, updatedTask };
+  const updateOrder = (boardId: string, tasks: Task[]) => {
+    dispatch(updateTaskNewOrder({ boardId, tasks }));
+  };
+  
+
+  return { addTask, removeTask, updatedTask, updateOrder };
 };

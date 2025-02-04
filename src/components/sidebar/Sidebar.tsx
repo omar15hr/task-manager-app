@@ -2,9 +2,10 @@ import { BaselineSvg, CloseSvg } from "../Svg";
 import {
   DndContext,
   DragEndEvent,
-  SensorDescriptor,
-  SensorOptions,
   closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -14,12 +15,11 @@ import { BoardWithId } from "../../interfaces/types";
 import { BoardContainer } from "./BoardContainer";
 import NewBoard from "./NewBoard";
 import { useState } from "react";
-import { NewBoardModal } from "./NewBoardModal"; // Importa el modal
+import { NewBoardModal } from "./NewBoardModal";
 
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
-  sensors: SensorDescriptor<SensorOptions>[];
   handleBoardId: (id: string) => void;
   handleDragEnd: (event: DragEndEvent) => void;
   boards: BoardWithId[];
@@ -29,7 +29,6 @@ interface SidebarProps {
 export function Sidebar({
   isOpen,
   toggleSidebar,
-  sensors,
   handleBoardId,
   handleDragEnd,
   boards,
@@ -47,6 +46,15 @@ export function Sidebar({
     setIsModalOpen(false);
     setEditingBoard(null);
   };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
+      },
+    })
+  );
 
   return (
     <>

@@ -3,16 +3,46 @@ import { BoardData, Task, TaskId } from "../../interfaces/types";
 
 const DEFAULT_STATE: BoardData[] = [
   {
-    id: '1',
+    id: "1",
     tasks: [
-      { id: '1', title: "Investigate Framer-Motion for animations.", status: "backlog", background: null, tags: ["concept"] },
-      { id: '2', title: "Implement CRUD operations", status: "backlog", background: "image-url", tags: ["technical"] },
+      {
+        id: "1",
+        title: "Investigate Framer-Motion for animations.",
+        status: "backlog",
+        background: null,
+        tags: ["concept"],
+      },
+      {
+        id: "2",
+        title: "Implement CRUD operations",
+        status: "backlog",
+        background: "image-url",
+        tags: ["technical"],
+      },
     ],
   },
   {
-    id: '2',
+    id: "2",
     tasks: [
-      { id: '3', title: "Design new UI", status: "in-progress", background: null, tags: ["design"] },
+      {
+        id: "3",
+        title: "Design new UI",
+        status: "in-progress",
+        background: null,
+        tags: ["design"],
+      },
+    ],
+  },
+  {
+    id: "3",
+    tasks: [
+      {
+        id: "3",
+        title: "Design new UI",
+        status: "completed",
+        background: null,
+        tags: ["design"],
+      },
     ],
   },
 ];
@@ -29,7 +59,10 @@ export const taskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
-    addNewTask: (state, action: PayloadAction<{ boardId: string, task: Task }>) => {
+    addNewTask: (
+      state,
+      action: PayloadAction<{ boardId: string; task: Task }>
+    ) => {
       const { boardId, task } = action.payload;
       const board = state.find((b) => b.id === boardId);
       if (board) {
@@ -42,7 +75,10 @@ export const taskSlice = createSlice({
       const id = action.payload;
       return state.filter((task) => task.id !== id);
     },
-    updateTaskById: (state, action: PayloadAction<{ id: TaskId, updatedTask: Partial<Task> }>) => {
+    updateTaskById: (
+      state,
+      action: PayloadAction<{ id: TaskId; updatedTask: Partial<Task> }>
+    ) => {
       const { id, updatedTask } = action.payload;
       return state.map((task) => {
         if (task.id === id) {
@@ -51,9 +87,19 @@ export const taskSlice = createSlice({
         return task;
       });
     },
+    updateTaskNewOrder: (
+      state,
+      action: PayloadAction<{ boardId: string; tasks: Task[] }>
+    ) => {
+      const { boardId, tasks } = action.payload;
+      const board = state.find((b) => b.id === boardId);
+      if (board) {
+        board.tasks = tasks;
+      }
+    }
   },
 });
 
 export default taskSlice.reducer;
 
-export const { addNewTask,deleteTaskById, updateTaskById } = taskSlice.actions;
+export const { addNewTask, deleteTaskById, updateTaskById, updateTaskNewOrder } = taskSlice.actions;
