@@ -1,19 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Task, TaskId, TaskWithId } from "../../interfaces/types";
+import { BoardData, Task, TaskId } from "../../interfaces/types";
 
-const DEFAULT_STATE = [
+const DEFAULT_STATE: BoardData[] = [
   {
     id: '1',
-    boardId: '1',
-    title: "Default Task",
-    status: "Backlog",
-    background: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-    tags: ["technical", "front-end"],
-  
+    tasks: [
+      { id: '1', title: "Investigate Framer-Motion for animations.", status: "backlog", background: null, tags: ["concept"] },
+      { id: '2', title: "Implement CRUD operations", status: "backlog", background: "image-url", tags: ["technical"] },
+    ],
+  },
+  {
+    id: '2',
+    tasks: [
+      { id: '3', title: "Design new UI", status: "in-progress", background: null, tags: ["design"] },
+    ],
   },
 ];
 
-const initialState: TaskWithId[] = (() => {
+const initialState: BoardData[] = (() => {
   const persistanceState = localStorage.getItem("tasks");
   if (persistanceState) {
     return JSON.parse(persistanceState).tasks;
@@ -25,9 +29,14 @@ export const taskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
-    addNewTask: (state, action: PayloadAction<Task>) => {
-      const id = crypto.randomUUID();
-      return [...state, { ...action.payload, id }];
+    addNewTask: (state, action: PayloadAction<{ boardId: string, task: Task }>) => {
+      const { boardId, task } = action.payload;
+      const board = state.find((b) => b.id === boardId);
+      if (board) {
+        const id = crypto.randomUUID();
+        board.tasks.push({ ...task, id });
+      }
+      return state;
     },
     deleteTaskById: (state, action: PayloadAction<TaskId>) => {
       const id = action.payload;

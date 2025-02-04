@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useUserActions } from "../../hooks/useTasksActions.ts";
 import { CheckSvg, CloseSvg } from "../Svg.tsx";
-import { Task, TaskWithId } from "../../interfaces/types.ts";
+import { Task } from "../../interfaces/types.ts";
 import { DropDownStatus } from "./DropDownStatus.tsx";
 import { DropDownTags } from "./DropDownTags.tsx";
 
 interface Props {
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   toggleModal: () => void;
-  task?: TaskWithId;
+  task?: Task;
   isEditing: boolean;
 }
 
@@ -45,7 +45,7 @@ export const NewTaskModal = ({
 
     if (!title.trim()) return;
 
-    const updatedData: Partial<TaskWithId> = {
+    const updatedData: Partial<Task> = {
       title,
       background: "",
       status: status,
@@ -56,6 +56,7 @@ export const NewTaskModal = ({
       updatedTask(task?.id, updatedData);
     } else {
       const newTask: Task = {
+        id: crypto.randomUUID(),
         title,
         tags: [selectedTag],
         background: "",

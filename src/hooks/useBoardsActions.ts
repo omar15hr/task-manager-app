@@ -1,5 +1,5 @@
-import { Board, BoardId } from "../interfaces/types";
-import { addNewBoard, deleteBoardById, updateBoardById } from "../store/boards/boardSlice";
+import { Board, BoardId, BoardWithId } from "../interfaces/types";
+import { addNewBoard, deleteBoardById, updateBoardById, updateBoardsOrder } from "../store/boards/boardSlice";
 import { useAppDispatch } from "./store";
 
 export const useUserActions = () => {
@@ -17,5 +17,9 @@ export const useUserActions = () => {
     dispatch(updateBoardById({ id, updatedBoard }));
   };
 
-  return { addBoard, removeBoard, updatedBoard };
+  const updatedOrder = (boards: BoardWithId[]) => {
+    dispatch(updateBoardsOrder(boards));
+  };
+
+  return { addBoard, removeBoard, updatedBoard, updatedOrder };
 };

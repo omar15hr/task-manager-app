@@ -1,14 +1,38 @@
 import { BaselineSvg, CloseSvg } from "../Svg";
-import { BoardsList } from "./BoardsList";
+import {
+  DndContext,
+  DragEndEvent,
+  SensorDescriptor,
+  SensorOptions,
+  closestCenter,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { BoardWithId } from "../../interfaces/types";
+import { BoardContainer } from "./BoardContainer";
 import NewBoard from "./NewBoard";
-
 
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
+  sensors: SensorDescriptor<SensorOptions>[];
+  handleBoardId: (id: string) => void;
+  handleDragEnd: (event: DragEndEvent) => void;
+  boards: BoardWithId[];
+  selectedBoardId: string | null;
 }
 
-export default function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
+export function Sidebar({
+  isOpen,
+  toggleSidebar,
+  sensors,
+  handleBoardId,
+  handleDragEnd,
+  boards,
+  selectedBoardId
+}: SidebarProps) {
   return (
     <nav
       className={`fixed left-0 bottom-0 flex flex-col items-end h-full bg-[#191B1F] pt-6 pb-8 transition-all duration-300 ${
@@ -24,12 +48,28 @@ export default function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
       </button>
       {isOpen && (
         <div className="px-4 pb-6 self-start w-full">
-          <ul className="mb-8 text-sm font-medium">
-            <li className="flex flex-col gap-3">
-              <BoardsList />
-              <NewBoard />
-            </li>
-          </ul>
+          <div className="flex flex-col w-full">
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={boards}
+                strategy={verticalListSortingStrategy}
+              >
+                {boards.map((board) => (
+                  <BoardContainer
+                    key={board.id}
+                    board={board}
+                    handleBoardId={handleBoardId}
+                    selectedBoardId={selectedBoardId}
+                  />
+                ))}
+              </SortableContext>
+            </DndContext>
+            <NewBoard />
+          </div>
         </div>
       )}
     </nav>
