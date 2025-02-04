@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useUserActions } from "../../hooks/useTasksActions.ts";
 import { CheckSvg, CloseSvg } from "../Svg.tsx";
 import { Task, TaskWithId } from "../../interfaces/types.ts";
+import { DropDownStatus } from "./DropDownStatus.tsx";
+import { DropDownTags } from "./DropDownTags.tsx";
 
 interface Props {
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +13,7 @@ interface Props {
 }
 
 const tags = ["concept", "technical", "front-end", "design"];
+const statuses = ["Backlog", "In Progress", "In Review", "Completed"];
 
 export const NewTaskModal = ({
   setIsVisible,
@@ -19,6 +22,7 @@ export const NewTaskModal = ({
   isEditing,
 }: Props) => {
   const [selectedTag, setSelectedTag] = useState<string>(tags[0]);
+  const [status, setStatus] = useState<string>(statuses[0]);
   const [title, setTitle] = useState<string>("");
 
   const { addTask, updatedTask } = useUserActions();
@@ -42,9 +46,9 @@ export const NewTaskModal = ({
     if (!title.trim()) return;
 
     const updatedData: Partial<TaskWithId> = {
-      title: 'New Task',
+      title,
       background: "",
-      status: "Backlog",
+      status: status,
       tags: [selectedTag],
     };
 
@@ -52,10 +56,10 @@ export const NewTaskModal = ({
       updatedTask(task?.id, updatedData);
     } else {
       const newTask: Task = {
-        title: 'New Task',
+        title,
         tags: [selectedTag],
         background: "",
-        status: "Backlog",
+        status,
       };
       addTask(newTask);
     }
@@ -78,32 +82,36 @@ export const NewTaskModal = ({
           <CloseSvg size={24} onClick={toggleModal} />
         </div>
         <div className="flex flex-row items-center justify-center gap-3 border-2 border-[#3d4249] rounded-xl p-4 h-32">
-          <button className="bg-[#007bff] rounded-4xl h-[35px] w-[200px] cursor-pointer">Random Background</button>
-          <button className="bg-[#ce2828] rounded-4xl h-[35px] w-[100px] cursor-pointer">Remove</button>
+          <button className="bg-[#007bff] rounded-4xl h-[35px] w-[200px] cursor-pointer">
+            Random Background
+          </button>
+          <button className="bg-[#ce2828] rounded-4xl h-[35px] w-[100px] cursor-pointer">
+            Remove
+          </button>
         </div>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="status" className="text-[#747c83]">Status</label>
-          <input
-            type="text"
-            name="status"
-            placeholder="e.g: Default Board"
-            value={status} 
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-3 rounded-2xl border-2 border-[#3d4249] my-3 focus:border-[#363b41] text-sm"
-          />
-          <label htmlFor="name" className="text-[#747c83]">Tags</label>
-          <input
-            type="text"
-            name="tags"
-            placeholder="e.g: Default Board"
-            value={tags}
-            className="w-full p-3 rounded-2xl border-2 border-[#3d4249] my-3 focus:border-[#363b41] text-sm"
-          />
-          <label htmlFor="name" className="text-[#747c83]">Task Title</label>
+
+          <div className="flex flex-col">
+            <label htmlFor="status" className="text-[#747c83]">
+              Status
+            </label>
+            <DropDownStatus onSelectStatus={setStatus} />
+          </div>
+
+          <div className="flex flex-col mt-2">
+          <label htmlFor="tags" className="text-[#747c83]">
+              Tags
+            </label>
+            <DropDownTags onSelect={setSelectedTag} />
+          </div>
+
+          <label htmlFor="title" className="text-[#747c83]">
+            Task Title
+          </label>
           <input
             type="text"
             name="title"
-            value={title} 
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full p-3 rounded-2xl border-2 border-[#3d4249] my-3 focus:border-[#363b41] text-sm"
           />

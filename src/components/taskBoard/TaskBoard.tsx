@@ -22,7 +22,7 @@ export default function TaskBoard({ isSidebarOpen }: ContentProps) {
       }`}
     >
       <div className="p-3 bg-[#2A2D32] h-[calc(100vh-2rem)] rounded-2xl flex flex-col">
-        <div className="flex gap-6 p-3 overflow-y-auto flex-grow">
+        <div className="flex gap-2 p-3 overflow-y-auto flex-grow">
           <TaskColumn 
             title="Backlog" 
             color="#768CE4" 
