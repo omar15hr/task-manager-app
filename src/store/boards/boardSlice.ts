@@ -1,11 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Board, BoardId, BoardWithId } from "../../interfaces/types";
+import { Board, BoardId, BoardWithId, Task, TaskId } from "../../interfaces/types";
 
-const DEFAULT_STATE: BoardWithId[] = [
-    { id: '1', name: "Development", emoji: "../../assets/emojis/board-logo-13.png", color: "#ff5733", tasks: [] },
-    { id: '2', name: "Design", emoji: "../../assets/emojis/board-logo-10.png", color: "#ff5733", tasks: [] },
-    { id: '3', name: "Product", emoji: "../../assets/emojis/board-logo-1.png", color: "#ff5733", tasks: [] },
-  ];
+const DEFAULT_STATE: BoardWithId[] = [];
 
 const initialState: BoardWithId[] = (() => {
   const persistanceState = localStorage.getItem("boards");
@@ -21,12 +17,14 @@ export const boardSlice = createSlice({
   reducers: {
     addNewBoard: (state, action: PayloadAction<Board>) => {
       const id = crypto.randomUUID();
-      return [...state, { ...action.payload, id }];
+      return [...state, { ...action.payload, id, tasks: [] }];
     },
+    
     deleteBoardById: (state, action: PayloadAction<BoardId>) => {
       const id = action.payload;
       return state.filter((board) => board.id !== id);
     },
+    
     updateBoardById: (
       state,
       action: PayloadAction<{ id: BoardId; updatedBoard: Partial<Board> }>
@@ -39,13 +37,92 @@ export const boardSlice = createSlice({
         return board;
       });
     },
+
     updateBoardsOrder: (state, action: PayloadAction<BoardWithId[]>) => {
       return action.payload;
+    },
+
+    addNewTaskToBoard: (
+      state,
+      action: PayloadAction<{ boardId: BoardId; task: Task }>
+    ) => {
+      const { boardId, task } = action.payload;
+      return state.map((board) => {
+        if (board.id === boardId) {
+          return {
+            ...board,
+            tasks: [...board.tasks, { ...task, id: crypto.randomUUID() }],
+          };
+        }
+        return board;
+      });
+    },
+
+    deleteTaskFromBoard: (
+      state,
+      action: PayloadAction<{ boardId: BoardId; taskId: TaskId }>
+    ) => {
+      const { boardId, taskId } = action.payload;
+      return state.map((board) => {
+        if (board.id === boardId) {
+          return {
+            ...board,
+            tasks: board.tasks.filter((task) => task.id !== taskId),
+          };
+        }
+        return board;
+      });
+    },
+
+    updateTaskInBoard: (
+      state,
+      action: PayloadAction<{
+        boardId: BoardId;
+        taskId: TaskId;
+        updatedTask: Partial<Task>;
+      }>
+    ) => {
+      const { boardId, taskId, updatedTask } = action.payload;
+      return state.map((board) => {
+        if (board.id === boardId) {
+          return {
+            ...board,
+            tasks: board.tasks.map((task) => {
+              if (task.id === taskId) {
+                return { ...task, ...updatedTask };
+              }
+              return task;
+            }),
+          };
+        }
+        return board;
+      });
+    },
+
+    updateTaskOrderInBoard: (
+      state,
+      action: PayloadAction<{ boardId: BoardId; tasks: Task[] }>
+    ) => {
+      const { boardId, tasks } = action.payload;
+      return state.map((board) => {
+        if (board.id === boardId) {
+          return { ...board, tasks };
+        }
+        return board;
+      });
     },
   },
 });
 
 export default boardSlice.reducer;
 
-export const { addNewBoard, deleteBoardById, updateBoardById, updateBoardsOrder } =
-  boardSlice.actions;
+export const {
+  addNewBoard,
+  deleteBoardById,
+  updateBoardById,
+  updateBoardsOrder,
+  addNewTaskToBoard,
+  deleteTaskFromBoard,
+  updateTaskInBoard,
+  updateTaskOrderInBoard,
+} = boardSlice.actions;

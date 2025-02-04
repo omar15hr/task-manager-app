@@ -12,15 +12,11 @@ export interface BoardWithId extends Board {
   id: BoardId;
 }
 
-export interface BoardData {
-  id: string;
-  tasks: Task[];
-}
-
 export interface Task {
   id: string;
   title: string;
   status: string;
   background: string | null;
   tags: string[];
+  boardId: BoardId;
 }
