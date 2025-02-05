@@ -30,7 +30,7 @@ export default function App() {
         }`}
       >
         {
-          boardSelected ? <Board /> : <StartBoard />
+          boardSelected ? <Board isSidebarOpen={isSidebarOpen} /> : <StartBoard />
         }
       </div>
     </div>

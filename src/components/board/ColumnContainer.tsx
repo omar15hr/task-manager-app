@@ -8,9 +8,10 @@ import { TaskCard } from "../task/TaskCard";
 interface ColumnContainerProps {
   columns: Column;
   tasks: Task[];
+  isSidebarOpen: boolean;
 }
 
-export function ColumnContainer({ columns, tasks }: ColumnContainerProps) {
+export function ColumnContainer({ columns, tasks, isSidebarOpen }: ColumnContainerProps) {
   const tasksStatus = useMemo(() => {
     if (!tasks) return [];
     return tasks.map((task) => task.id);
@@ -39,7 +40,7 @@ export function ColumnContainer({ columns, tasks }: ColumnContainerProps) {
       <div
         ref={setNodeRef}
         style={style}
-        className="flex flex-col bg-[#2A2D32] w-[300px] h-[700px] max-h-[700px] rounded-md items-center p-2 opacity-60 border-2 border-rose-500"
+        className={`flex flex-col bg-[#2A2D32] w-[300px] h-[700px] max-h-[700px] rounded-md items-center p-2 opacity-60 border-2 border-rose-500`}
       ></div>
     );
 
@@ -49,7 +50,9 @@ export function ColumnContainer({ columns, tasks }: ColumnContainerProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className="flex flex-col bg-[#2A2D32] w-[300px] h-[700px] max-h-[700px] rounded-md items-center p-2"
+      className={`flex flex-col bg-[#2A2D32] h-[700px] max-h-[700px] rounded-md items-center p-2 ${
+        isSidebarOpen ? "w-[300px]" : "w-[340px]"
+      }`}
     >
       <div className="flex flex-row gap-2 items-center font-bold">
         <span

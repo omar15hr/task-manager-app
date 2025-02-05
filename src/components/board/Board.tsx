@@ -5,6 +5,10 @@ import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { ColumnContainer } from "./ColumnContainer";
 import { TaskCard } from "../task/TaskCard";
 
+interface BoardProps {
+  isSidebarOpen: boolean;
+}
+
 export interface Column {
   id: string;
   title: string;
@@ -49,7 +53,7 @@ const initialTasks: Task[] = [
   },
 ];
 
-export function Board() {
+export function Board({ isSidebarOpen }: BoardProps) {
   const [columns, setColumns] = useState<Column[]>([
     { id: "1", title: "Backlog", color: "#768CE4" },
     { id: "2", title: "In Progress", color: "#FEEF49" },
@@ -153,13 +157,13 @@ export function Board() {
       <div className="flex flex-row gap-4 p-4 items-center justify-center">
         <SortableContext items={tasksIds}>
           {columns.map((col) => (
-            <ColumnContainer key={col.id} columns={col} tasks={tasks.filter((task) => task.columnId === col.id)} />
+            <ColumnContainer key={col.id} isSidebarOpen={isSidebarOpen} columns={col} tasks={tasks.filter((task) => task.columnId === col.id)} />
           ))}
         </SortableContext>
       </div>
       <DragOverlay>
         {activeColumn && 
-            (<ColumnContainer columns={activeColumn} tasks={tasks.filter((task) => task.columnId === activeColumn.id)} />)
+            (<ColumnContainer isSidebarOpen={isSidebarOpen} columns={activeColumn} tasks={tasks.filter((task) => task.columnId === activeColumn.id)} />)
         }
         {activeTask && 
           (<TaskCard task={activeTask} />)
