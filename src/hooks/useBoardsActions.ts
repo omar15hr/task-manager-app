@@ -1,5 +1,5 @@
 import { Board, BoardId, BoardWithId, Task } from "../interfaces/types";
-import { addNewBoard, addNewTaskToBoard, deleteBoardById, updateBoardById, updateBoardsOrder } from "../store/boards/boardSlice";
+import { addNewBoard, addNewTaskToBoard, deleteBoardById, updateBoardById, updateBoardsOrder, updateTaskOrderInBoard } from "../store/boards/boardSlice";
 import { useAppDispatch } from "./store";
 
 export const useBoardsActions = () => {
@@ -22,10 +22,13 @@ export const useBoardsActions = () => {
   };
 
   // TASK
+  const updatedOrderTask = (boardId: BoardId, tasks: Task[]) => {
+    dispatch(updateTaskOrderInBoard({ boardId, tasks }));
+  };
 
   const addTaskToBoard = (boardId: BoardId, task: Task) => {
     dispatch(addNewTaskToBoard({ boardId, task }));
   };
 
-  return { addBoard, removeBoard, updatedBoard, updatedOrder, addTaskToBoard };
+  return { addBoard, removeBoard, updatedBoard, updatedOrder, addTaskToBoard, updatedOrderTask };
 };

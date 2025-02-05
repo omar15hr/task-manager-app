@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BoardWithId } from "../../interfaces/types";
 import { TaskForm } from "./TaskForm";
 import { PlusSvg } from "../Svg";
+import { TaskColumn } from "./TaskColumn";
 
 interface ContentProps {
   isSidebarOpen: boolean;
@@ -9,31 +10,22 @@ interface ContentProps {
   boards: BoardWithId[];
 }
 
+const taskStatuses = {
+  Backlog: "bg-emerald-500",
+  "In-Progress": "bg-purple-500",
+  "In-Review": "bg-blue-500",
+  Completed: "bg-yellow-500",
+};
+
 export function TaskBoard({
   isSidebarOpen,
   selectedBoard,
   boards,
 }: ContentProps) {
   const [isVisible, setIsVisible] = useState(false);
-
-  const toggleModal = () => {
-    setIsVisible(!isVisible);
-  };
+  const toggleModal = () => setIsVisible(!isVisible);
 
   const boardSelected = boards.find((board) => board.id === selectedBoard);
-
-  const backlogTask = boardSelected?.tasks.filter(
-    (task) => task.status === "Backlog"
-  );
-  const inProgressTask = boardSelected?.tasks.filter(
-    (task) => task.status === "In-Progress"
-  );
-  const inReviewTask = boardSelected?.tasks.filter(
-    (task) => task.status === "In-Review"
-  );
-  const completedTask = boardSelected?.tasks.filter(
-    (task) => task.status === "Completed"
-  );
 
   return (
     <div
@@ -59,81 +51,20 @@ export function TaskBoard({
                   toggleModal={toggleModal}
                 />
               )}
-              <div
-                className={`flex flex-col gap-3 items-center ${
-                  isSidebarOpen ? "w-64" : "w-80"
-                } h-[calc(100vh-2rem)] overflow-auto`}
-              >
-                <h1>Backlog</h1>
-                {backlogTask?.map((task) => (
-                  <div
-                    key={task.id}
-                    className="bg-[#1c1e22] rounded-2xl flex flex-col gap-3 p-4 w-full"
-                  >
-                    <p>{task.title}</p>
-                    <p className="bg-blue-300 rounded-4xl px-2 py-1 text-xs w-20 text-blue-900">
-                      {task.status}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div
-                className={`flex flex-col gap-3 items-center ${
-                  isSidebarOpen ? "w-64" : "w-80"
-                } h-[calc(100vh-2rem)] overflow-auto`}
-              >
-                <h1>In Progress</h1>
-                {inProgressTask?.map((task) => (
-                  <div
-                    key={task.id}
-                    className="bg-[#1c1e22] rounded-2xl flex flex-col gap-3 p-4 w-full"
-                  >
-                    <p>{task.title}</p>
-                    <p className="bg-blue-300 rounded-4xl px-2 py-1 text-xs w-20 text-blue-900">
-                      {task.status}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div
-                className={`flex flex-col gap-3 items-center ${
-                  isSidebarOpen ? "w-64" : "w-80"
-                } h-[calc(100vh-2rem)] overflow-auto`}
-              >
-                <h1>In Review</h1>
-                {inReviewTask?.map((task) => (
-                  <div
-                    key={task.id}
-                    className="bg-[#1c1e22] rounded-2xl flex flex-col gap-3 p-4 w-full"
-                  >
-                    <p>{task.title}</p>
-                    <p className="bg-blue-300 rounded-4xl px-2 py-1 text-xs w-20 text-blue-900">
-                      {task.status}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div
-                className={`flex flex-col gap-3 items-center ${
-                  isSidebarOpen ? "w-64" : "w-80"
-                } h-[calc(100vh-2rem)] overflow-auto`}
-              >
-                <h1>Completed</h1>
-                {completedTask?.map((task) => (
-                  <div
-                    key={task.id}
-                    className="bg-[#1c1e22] rounded-2xl flex flex-col gap-3 p-4 w-full"
-                  >
-                    <p>{task.title}</p>
-                    <p className="bg-blue-300 rounded-4xl px-2 py-1 text-xs w-20 text-blue-900">
-                      {task.status}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              {Object.entries(taskStatuses).map(([status, colorClass]) => (
+                
+                  <TaskColumn
+                    key={status}
+                    title={status}
+                    boards={boards}
+                    selectedBoard={selectedBoard}
+                    tasks={boardSelected?.tasks.filter(
+                      (task) => task.status === status
+                    )}
+                    isSidebarOpen={isSidebarOpen}
+                    colorClass={colorClass}
+                  />
+              ))}
             </div>
           ) : (
             <div>Selecciona un board para agregar tareas</div>
