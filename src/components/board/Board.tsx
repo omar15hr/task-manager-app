@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Task } from "../../interfaces/types";
+import { BoardWithId, Task } from "../../interfaces/types";
 import { DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { ColumnContainer } from "./ColumnContainer";
@@ -7,6 +7,7 @@ import { TaskCard } from "../task/TaskCard";
 
 interface BoardProps {
   isSidebarOpen: boolean;
+  boardSelected: BoardWithId;
 }
 
 export interface Column {
@@ -15,51 +16,55 @@ export interface Column {
   color: string;
 }
 
-const initialTasks: Task[] = [
-  {
-    id: "task1",
-    title: "Task 1",
-    status: "In Progress",
-    background: null,
-    tags: [{ tag: "Front-end", color: "#768CE4", colorText: '#455285' }],
-    columnId: "1",
-  },
-  {
-    id: "task2",
-    title: "Task 2",
-    status: "In Review",
-    background: null,
-    tags: [
-      { tag: "Back-end", color: "#FEEF49", colorText: '#7e7625' },
-      { tag: "Front-end", color: "#768CE4", colorText: '#455285'}
-    ],
-    columnId: "3",
-  },
-  {
-    id: "task3",
-    title: "Task 3",
-    status: "In Progress",
-    background: null,
-    tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
-    columnId: "2",
-  },
-  {
-    id: "task4",
-    title: "Task 4",
-    status: "In Progress",
-    background: null,
-    tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
-    columnId: "2",
-  },
-];
+// const initialTasks: Task[] = [
+//   {
+//     id: "task1",
+//     title: "Task 1",
+//     status: "In Progress",
+//     background: null,
+//     tags: [{ tag: "Front-end", color: "#768CE4", colorText: '#455285' }],
+//     columnId: "1",
+//   },
+//   {
+//     id: "task2",
+//     title: "Task 2",
+//     status: "In Review",
+//     background: null,
+//     tags: [
+//       { tag: "Back-end", color: "#FEEF49", colorText: '#7e7625' },
+//       { tag: "Front-end", color: "#768CE4", colorText: '#455285'}
+//     ],
+//     columnId: "3",
+//   },
+//   {
+//     id: "task3",
+//     title: "Task 3",
+//     status: "In Progress",
+//     background: null,
+//     tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
+//     columnId: "2",
+//   },
+//   {
+//     id: "task4",
+//     title: "Task 4",
+//     status: "In Progress",
+//     background: null,
+//     tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
+//     columnId: "2",
+//   },
+// ];
 
-export function Board({ isSidebarOpen }: BoardProps) {
+export function Board({ isSidebarOpen, boardSelected }: BoardProps) {
   const [columns, setColumns] = useState<Column[]>([
     { id: "1", title: "Backlog", color: "#768CE4" },
     { id: "2", title: "In Progress", color: "#FEEF49" },
     { id: "3", title: "In Review", color: "#D784EA" },
     { id: "4", title: "Completed", color: "#80FA9D" },
   ]);
+
+  const initialTasks: Task[] = boardSelected.tasks;
+  console.log(initialTasks);
+
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
