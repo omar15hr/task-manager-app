@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BoardWithId } from "../../interfaces/types";
 
 const initialState: BoardWithId[] = [
@@ -70,7 +70,9 @@ export const boardSlice = createSlice({
   name: "board",
   initialState: initialState,
   reducers: {
-    
+    addBoard: (state, action: PayloadAction<BoardWithId>) => {
+      state.push(action.payload);
+    },
   },
 });
 

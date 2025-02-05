@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { CirclePlusSvg, PencilSvg, TrashSvg } from "../../assets/svgs/Svg";
 import { BoardWithId } from "../../interfaces/types";
+import { BoardForm } from "./BoardForm";
 
 interface BoardContainerProps {
   boards: BoardWithId[];
@@ -7,6 +9,8 @@ interface BoardContainerProps {
 }
 
 export function BoardContainer({ boards, selectBoard }: BoardContainerProps) {
+
+  const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-2 mt-4 items-center ml-3">
@@ -35,10 +39,17 @@ export function BoardContainer({ boards, selectBoard }: BoardContainerProps) {
         </ul>
       </div>
 
-      <button className="flex items-center gap-2 hover:bg-[#2A2D32] p-4 rounded-full cursor-pointer mt-5">
+      <button onClick={() => setIsBoardFormOpen(true)} className="flex items-center gap-2 hover:bg-[#2A2D32] p-4 rounded-full cursor-pointer mt-5">
         <CirclePlusSvg size={24} />
         <span>Add new board</span>
       </button>
+
+      {isBoardFormOpen && (
+        <BoardForm 
+          isBoardFormOpen={isBoardFormOpen} 
+          setIsBoardFormOpen={setIsBoardFormOpen}
+        />
+      )}
     </div>
   );
 }

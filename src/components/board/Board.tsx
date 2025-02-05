@@ -16,43 +16,43 @@ export interface Column {
   color: string;
 }
 
-// const initialTasks: Task[] = [
-//   {
-//     id: "task1",
-//     title: "Task 1",
-//     status: "In Progress",
-//     background: null,
-//     tags: [{ tag: "Front-end", color: "#768CE4", colorText: '#455285' }],
-//     columnId: "1",
-//   },
-//   {
-//     id: "task2",
-//     title: "Task 2",
-//     status: "In Review",
-//     background: null,
-//     tags: [
-//       { tag: "Back-end", color: "#FEEF49", colorText: '#7e7625' },
-//       { tag: "Front-end", color: "#768CE4", colorText: '#455285'}
-//     ],
-//     columnId: "3",
-//   },
-//   {
-//     id: "task3",
-//     title: "Task 3",
-//     status: "In Progress",
-//     background: null,
-//     tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
-//     columnId: "2",
-//   },
-//   {
-//     id: "task4",
-//     title: "Task 4",
-//     status: "In Progress",
-//     background: null,
-//     tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
-//     columnId: "2",
-//   },
-// ];
+const initialTasks: Task[] = [
+  {
+    id: "task1",
+    title: "Task 1",
+    status: "In Progress",
+    background: null,
+    tags: [{ tag: "Front-end", color: "#768CE4", colorText: '#455285' }],
+    columnId: "1",
+  },
+  {
+    id: "task2",
+    title: "Task 2",
+    status: "In Review",
+    background: null,
+    tags: [
+      { tag: "Back-end", color: "#FEEF49", colorText: '#7e7625' },
+      { tag: "Front-end", color: "#768CE4", colorText: '#455285'}
+    ],
+    columnId: "3",
+  },
+  {
+    id: "task3",
+    title: "Task 3",
+    status: "In Progress",
+    background: null,
+    tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
+    columnId: "2",
+  },
+  {
+    id: "task4",
+    title: "Task 4",
+    status: "In Progress",
+    background: null,
+    tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
+    columnId: "2",
+  },
+];
 
 export function Board({ isSidebarOpen, boardSelected }: BoardProps) {
   const [columns, setColumns] = useState<Column[]>([
@@ -62,8 +62,9 @@ export function Board({ isSidebarOpen, boardSelected }: BoardProps) {
     { id: "4", title: "Completed", color: "#80FA9D" },
   ]);
 
-  const initialTasks: Task[] = boardSelected.tasks;
+  const initialTasks2: Task[] = boardSelected.tasks;
   console.log(initialTasks);
+  console.log(initialTasks2);
 
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
