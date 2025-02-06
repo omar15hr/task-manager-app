@@ -4,24 +4,21 @@ export type TaskId = string;
 export interface Board {
   name: string;
   emoji: string;
-  tasks: Task[];
+  tasks: TaskWithId[];
 }
 
 export interface BoardWithId extends Board {
   id: BoardId;
 }
 
+export interface TaskWithId extends Task {
+  id: TaskId;
+}
+
 export interface Task {
-  id: string;
   title: string;
   status: string;
   background: string | null;
-  tags: TagInfo[];
-  columnId: string;
-}
-
-export interface TagInfo {
   tag: string;
-  color: string;
-  colorText: string;
+  columnId: string;
 }

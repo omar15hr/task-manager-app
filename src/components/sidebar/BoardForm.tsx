@@ -45,7 +45,6 @@ export function BoardForm({
     if (!boardName || !selectedLogo) return;
 
     if (boardToUpdate) {
-      // Si estamos editando un board existente
       const updatedBoard: BoardWithId = {
         ...boardToUpdate,
         name: boardName,
@@ -53,7 +52,6 @@ export function BoardForm({
       };
       handleUpdateBoard(updatedBoard);
     } else {
-      // Si estamos creando un nuevo board
       const newBoard: Board = {
         name: boardName,
         emoji: selectedLogo,

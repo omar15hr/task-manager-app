@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { Board, BoardId, BoardWithId } from "../interfaces/types";
-import { addNewBoard, deleteBoardById, updateBoardById } from "../store/board/slice";
+import { Board, BoardId, BoardWithId, TaskWithId } from "../interfaces/types";
+import { addNewBoard, addNewTask, deleteBoardById, updateBoardById } from "../store/board/slice";
 
 export function useBoardActions() {
   const dispatch = useDispatch();
@@ -17,9 +17,14 @@ export function useBoardActions() {
     dispatch(updateBoardById(board));
   };
 
+  const addTask = (task: TaskWithId) => {
+    dispatch(addNewTask({ task }));
+  };
+
   return {
     addBoard,
     deleteBoard,
     updateBoard,
+    addTask,
   };
 }

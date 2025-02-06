@@ -1,9 +1,9 @@
 import { useSortable } from "@dnd-kit/sortable";
-import { Task } from "../../interfaces/types";
+import { TaskWithId } from "../../interfaces/types";
 import { CSS } from "@dnd-kit/utilities";
 
 interface TaskCardProps {
-  task: Task;
+  task: TaskWithId;
 }
 
 export function TaskCard({ task }: TaskCardProps) {
@@ -44,15 +44,12 @@ export function TaskCard({ task }: TaskCardProps) {
     >
       <div>{task.title}</div>
       <div className="flex flex-row gap-2 items-center">
-        {task.tags.map((tag) => (
           <div
-            key={tag.color}
-            style={{ backgroundColor: tag.color, color: tag.colorText }}
+            style={{ backgroundColor: task.tags.color, color: task.tags.colorText }}
             className="p-1 h-5 rounded-md w-20 items-center flex justify-center text-sm"
           >
-            {tag.tag}
+            {task.tags.tag}
           </div>
-        ))}
       </div>
     </div>
   );

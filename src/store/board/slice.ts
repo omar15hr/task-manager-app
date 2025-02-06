@@ -1,73 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Board, BoardId, BoardWithId } from "../../interfaces/types";
+import {
+  Board,
+  BoardId,
+  BoardWithId,
+  TaskWithId,
+} from "../../interfaces/types";
 
-const initialState: BoardWithId[] = [
-  {
-    id: "1",
-    name: "Board 1",
-    emoji: "/src/assets/emojis/board-logo-01.png",
-    tasks: [
-      {
-        id: "task1",
-        title: "Task 1",
-        status: "In Progress",
-        background: null,
-        tags: [{ tag: "Front-end", color: "#768CE4", colorText: '#455285' }],
-        columnId: "1",
-      },
-      {
-        id: "task2",
-        title: "Task 2",
-        status: "In Review",
-        background: null,
-        tags: [
-          { tag: "Back-end", color: "#FEEF49", colorText: '#7e7625' },
-          { tag: "Front-end", color: "#768CE4", colorText: '#455285'}
-        ],
-        columnId: "1",
-      },
-      {
-        id: "task3",
-        title: "Task 3",
-        status: "In Progress",
-        background: null,
-        tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
-        columnId: "1",
-      },
-    ],
-  },
-  {
-    id: "2",
-    name: "Board 2",
-    emoji: "/src/assets/emojis/board-logo-02.png",
-    tasks: [
-      {
-        id: "task4",
-        title: "Task 1",
-        status: "In Progress",
-        background: null,
-        tags: [{ tag: "Front-end", color: "#768CE4", colorText: '#455285' }],
-        columnId: "2",
-      },
-      {
-        id: "task5",
-        title: "Task 2",
-        status: "In Review",
-        background: null,
-        tags: [
-          { tag: "Back-end", color: "#FEEF49", colorText: '#7e7625' },
-          { tag: "Front-end", color: "#768CE4", colorText: '#455285'}
-        ],
-        columnId: "2",
-      },
-    ],
-  }
-];
+const initialState: BoardWithId[] = [];
 
 export const boardSlice = createSlice({
   name: "board",
   initialState: initialState,
   reducers: {
+    // BOARD
     addNewBoard: (state, action: PayloadAction<Board>) => {
       const id = crypto.randomUUID();
       state.push({ ...action.payload, id });
@@ -81,8 +26,22 @@ export const boardSlice = createSlice({
       const index = state.findIndex((board) => board.id === boardWithId.id);
       state[index] = action.payload;
     },
+    // TASK
+    addNewTask: (
+      state,
+      action: PayloadAction<{ task: TaskWithId}>
+    ) => {
+      const { task } = action.payload;
+      const boardId = task.columnId;
+      const board = state.find((board) => board.id === boardId);
+      if (!board) return;
+
+      board.tasks.push(task);
+      return state;
+    },
   },
 });
 
 export default boardSlice.reducer;
-export const { addNewBoard, deleteBoardById, updateBoardById } = boardSlice.actions;
+export const { addNewBoard, deleteBoardById, updateBoardById, addNewTask } =
+  boardSlice.actions;

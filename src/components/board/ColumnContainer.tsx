@@ -1,17 +1,28 @@
-import { useMemo } from "react";
-import { Task } from "../../interfaces/types";
+import { useMemo, useState } from "react";
+import { BoardWithId, TaskWithId } from "../../interfaces/types";
 import { Column } from "./Board";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { TaskCard } from "../task/TaskCard";
+import { PlusSvg } from "../../assets/svgs/Svg";
+import { TaskForm } from "../task/TaskForm";
 
 interface ColumnContainerProps {
   columns: Column;
-  tasks: Task[];
+  tasks: TaskWithId[];
   isSidebarOpen: boolean;
+  boardSelected: BoardWithId;
 }
 
-export function ColumnContainer({ columns, tasks, isSidebarOpen }: ColumnContainerProps) {
+export function ColumnContainer({
+  columns,
+  tasks,
+  isSidebarOpen,
+  boardSelected,
+}: ColumnContainerProps) {
+
+   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
+
   const tasksStatus = useMemo(() => {
     if (!tasks) return [];
     return tasks.map((task) => task.id);
@@ -68,6 +79,22 @@ export function ColumnContainer({ columns, tasks, isSidebarOpen }: ColumnContain
             <TaskCard key={task.id} task={task} />
           ))}
         </SortableContext>
+        {title === "Backlog" && (
+          <button
+            onClick={() => setIsTaskFormOpen(true)}
+            className="flex items-center gap-2 justify-center bg-[#BCD4FD] text-[#1C3DC0] px-4 py-2 rounded-full mt-4 cursor-pointer"
+          >
+            <PlusSvg size={24} />
+            <span>Add new task card</span>
+          </button>
+        )}
+        {isTaskFormOpen && (
+          <TaskForm
+            boardSelected={boardSelected}
+            isTaskFormOpen={isTaskFormOpen}
+            setIsTaskFormOpen={setIsTaskFormOpen}
+          />
+        )}
       </div>
     </div>
   );
