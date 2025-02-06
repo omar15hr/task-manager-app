@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BoardWithId } from "../../interfaces/types";
+import { Board, BoardWithId } from "../../interfaces/types";
 
 const initialState: BoardWithId[] = [
   {
     id: "1",
     name: "Board 1",
-    emoji: "🏢",
-    color: "#768CE4",
+    emoji: "/src/assets/emojis/board-logo-01.png",
     tasks: [
       {
         id: "task1",
@@ -40,8 +39,7 @@ const initialState: BoardWithId[] = [
   {
     id: "2",
     name: "Board 2",
-    emoji: "🏢",
-    color: "#768CE4",
+    emoji: "/src/assets/emojis/board-logo-02.png",
     tasks: [
       {
         id: "task4",
@@ -70,10 +68,12 @@ export const boardSlice = createSlice({
   name: "board",
   initialState: initialState,
   reducers: {
-    addBoard: (state, action: PayloadAction<BoardWithId>) => {
-      state.push(action.payload);
+    addNewBoard: (state, action: PayloadAction<Board>) => {
+      const id = crypto.randomUUID();
+      state.push({ ...action.payload, id });
     },
   },
 });
 
 export default boardSlice.reducer;
+export const { addNewBoard } = boardSlice.actions;

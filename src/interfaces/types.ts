@@ -4,7 +4,6 @@ export type TaskId = string;
 export interface Board {
   name: string;
   emoji: string;
-  color: string;
   tasks: Task[];
 }
 

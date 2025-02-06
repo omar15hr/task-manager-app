@@ -13,7 +13,7 @@ export function BoardContainer({ boards, selectBoard }: BoardContainerProps) {
   const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
 
   return (
-    <div className="flex flex-col gap-2 mt-4 items-center ml-3">
+    <div className="flex flex-col gap-2 mt-4 items-center ml-1 w-full">
       <div className="text-2xl font-bold">Task Manager</div>
       <div className="text-sm">Manage your boards</div>
 
@@ -23,8 +23,9 @@ export function BoardContainer({ boards, selectBoard }: BoardContainerProps) {
             <li
               key={board.id}
               onClick={() => selectBoard(board)}
-              className="flex flex-row p-2 justify-between border-2 border-[#506FEA] hover:border-[#384ea5] rounded-full cursor-pointer"
+              className="flex flex-row p-2 justify-between border-2 border-[#506FEA] hover:border-[#384ea5] rounded-full cursor-pointer items-center"
             >
+              <img src={board.emoji} alt={board.name} className="w-8 h-8 rounded-full" />
               <span className="ml-1">{board.name}</span>
               <div className="flex gap-1">
                 <div>
