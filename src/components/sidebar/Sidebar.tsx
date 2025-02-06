@@ -1,5 +1,6 @@
 import { useBoardActions } from "../../hooks/useBoardActions";
 import { BoardWithId } from "../../interfaces/types";
+import { BoardForm } from "./BoardForm";
 
 interface SidebarProps {
   boards: BoardWithId[];
@@ -7,8 +8,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ boards, setSelectedBoard }: SidebarProps) {
-
-    const { addBoard } = useBoardActions();
+  const { addBoard } = useBoardActions();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -22,44 +22,25 @@ export function Sidebar({ boards, setSelectedBoard }: SidebarProps) {
     addBoard({ name, emoji, tasks: [] });
   };
 
-
   return (
-    <div className="w-2/4 flex justify-center">
-        <form onSubmit={handleSubmit} className="flex flex-col bg-gray-800 p-4">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            name="name"
-            className="border-2 border-gray-500 rounded-full p-1 text-white"
-          />
-
-          <label htmlFor="emoji" className="mt-5">
-            Emoji
-          </label>
-          <select
-            name="emoji"
-            className="border-2 border-gray-500 rounded-full p-2"
+    <div className="w-1/5 p-4">
+      <div className="flex flex-col p-4 h-80 items-center">
+        <div className="text-2xl font-bold mb-4">Task Manager</div>
+        <div className="flex flex-col gap-2 w-full">
+        {boards.map((board) => (
+          <div
+            key={board.id}
+            className="flex flex-row p-2 rounded-full border-2 border-gray-700 hover:bg-gray-700 cursor-pointer w-full"
+            onClick={() => setSelectedBoard(board)}
           >
-            <option value="🏠">🏠</option>
-            <option value="🏢">🏢</option>
-          </select>
-
-          <button type="submit" className="p-2 rounded-full bg-gray-400 mt-4">
-            Save
-          </button>
-        </form>
-
-        <div className="flex flex-row">
-          {boards.map((board) => (
-            <div
-              key={board.id}
-              className="p-4 bg-gray-600 rounded-full cursor-pointer"
-              onClick={() => setSelectedBoard(board)}
-            >
-              {board.name}
-            </div>
-          ))}
+            <div><img src={board.emoji} alt={board.name} className="w-8 h-8" /></div>
+            <div>{board.name}</div>
+          </div>
+        ))}
         </div>
       </div>
-  )
+
+      <BoardForm handleSubmit={handleSubmit} />
+    </div>
+  );
 }

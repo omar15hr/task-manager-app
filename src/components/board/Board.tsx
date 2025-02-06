@@ -34,8 +34,7 @@ export function Board({ selectedBoard, tasks }: BoardProps) {
   };
 
   return (
-    <div className="w-2/4 flex justify-center">
-        <div className="bg-gray-700"></div>
+    <div className="w-4/5 flex justify-center bg-gray-700 p-4">
         <div className="flex flex-col">
           {tasks.map((task) => (
             <div key={task.id} className="flex bg-gray-700 rounded-full p-4">
