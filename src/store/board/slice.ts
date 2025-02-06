@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Board, BoardWithId } from "../../interfaces/types";
+import { Board, BoardId, BoardWithId } from "../../interfaces/types";
 
 const initialState: BoardWithId[] = [
   {
@@ -72,8 +72,17 @@ export const boardSlice = createSlice({
       const id = crypto.randomUUID();
       state.push({ ...action.payload, id });
     },
+    deleteBoardById: (state, action: PayloadAction<BoardId>) => {
+      const id = action.payload;
+      return state.filter((board) => board.id !== id);
+    },
+    updateBoardById: (state, action: PayloadAction<BoardWithId>) => {
+      const boardWithId = action.payload;
+      const index = state.findIndex((board) => board.id === boardWithId.id);
+      state[index] = action.payload;
+    },
   },
 });
 
 export default boardSlice.reducer;
-export const { addNewBoard } = boardSlice.actions;
+export const { addNewBoard, deleteBoardById, updateBoardById } = boardSlice.actions;

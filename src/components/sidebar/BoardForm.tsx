@@ -1,17 +1,36 @@
 import React from "react";
 import logos from "../../assets/emojis/logos";
 import { useBoardActions } from "../../hooks/useBoardActions";
-import { Board } from "../../interfaces/types";
+import { Board, BoardWithId } from "../../interfaces/types";
 
 interface BoardFormProps {
   isBoardFormOpen: boolean;
   setIsBoardFormOpen: (isOpen: boolean) => void;
+  boardToUpdate: BoardWithId | null;
+  handleUpdateBoard: (board: BoardWithId) => void;
+  onCancel: () => void;
 }
 
-export function BoardForm({ isBoardFormOpen, setIsBoardFormOpen }: BoardFormProps) {
+export function BoardForm({ 
+  isBoardFormOpen, 
+  setIsBoardFormOpen, 
+  boardToUpdate, 
+  handleUpdateBoard, 
+  onCancel 
+}: BoardFormProps) {
   const [selectedLogo, setSelectedLogo] = React.useState<string>("");
   const [boardName, setBoardName] = React.useState<string>("");
   const { addBoard } = useBoardActions();
+
+  React.useEffect(() => {
+    if (boardToUpdate) {
+      setBoardName(boardToUpdate.name);
+      setSelectedLogo(boardToUpdate.emoji);
+    } else {
+      setBoardName("");
+      setSelectedLogo("");
+    }
+  }, [boardToUpdate]);
 
   if (!isBoardFormOpen) return null;
 
@@ -25,13 +44,23 @@ export function BoardForm({ isBoardFormOpen, setIsBoardFormOpen }: BoardFormProp
     event.preventDefault();
     if (!boardName || !selectedLogo) return;
 
-    const newBoard: Board = {
-      name: boardName,
-      emoji: selectedLogo,
-      tasks: [],
-    };
-
-    addBoard(newBoard);
+    if (boardToUpdate) {
+      // Si estamos editando un board existente
+      const updatedBoard: BoardWithId = {
+        ...boardToUpdate,
+        name: boardName,
+        emoji: selectedLogo,
+      };
+      handleUpdateBoard(updatedBoard);
+    } else {
+      // Si estamos creando un nuevo board
+      const newBoard: Board = {
+        name: boardName,
+        emoji: selectedLogo,
+        tasks: [],
+      };
+      addBoard(newBoard);
+    }
 
     setIsBoardFormOpen(false);
     setBoardName("");
@@ -41,7 +70,9 @@ export function BoardForm({ isBoardFormOpen, setIsBoardFormOpen }: BoardFormProp
   return (
     <div onClick={handleClickOutside} className="fixed inset-0 bg-[#00000091] flex items-center justify-center z-50">
       <form onSubmit={handleSubmit} className="bg-[#2A2D32] p-6 rounded-lg shadow-lg max-w-md w-full modal-content">
-        <h2 className="text-2xl font-semibold mb-4">Create New Board</h2>
+        <h2 className="text-2xl font-semibold mb-4">
+          {boardToUpdate ? "Edit Board" : "Create New Board"}
+        </h2>
 
         <div className="flex flex-col gap-2 mb-4">
           <label htmlFor="title">Board name</label>
@@ -76,12 +107,15 @@ export function BoardForm({ isBoardFormOpen, setIsBoardFormOpen }: BoardFormProp
             type="submit"
             className="bg-[#4063EE] text-white px-4 py-2 rounded-full hover:bg-[#4063eebb]"
           >
-            Create board
+            {boardToUpdate ? "Update board" : "Create board"}
           </button>
           <button
             type="button"
             className="border-2 border-[#464b53] hover:bg-[#575e68] text-white px-4 py-2 rounded-full"
-            onClick={() => setIsBoardFormOpen(false)}
+            onClick={() => {
+              setIsBoardFormOpen(false);
+              onCancel();
+            }}
           >
             Close
           </button>

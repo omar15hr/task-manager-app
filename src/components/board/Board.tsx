@@ -63,8 +63,6 @@ export function Board({ isSidebarOpen, boardSelected }: BoardProps) {
   ]);
 
   const initialTasks2: Task[] = boardSelected.tasks;
-  console.log(initialTasks);
-  console.log(initialTasks2);
 
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
