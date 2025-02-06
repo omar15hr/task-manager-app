@@ -13,6 +13,8 @@ export function BoardContainer({ boards, selectBoard }: BoardContainerProps) {
   const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
   const [boardToDelete, setBoardToDelete] = useState<BoardId | null>(null);
   const [boardToUpdate, setBoardToUpdate] = useState<BoardWithId | null>(null);
+  const [selectedBoardId, setSelectedBoardId] = useState<BoardId | null>(null);
+
 
   const modalBoard = boards.find((board) => board.id === boardToDelete);
   const { deleteBoard, updateBoard } = useBoardActions();
@@ -43,8 +45,13 @@ export function BoardContainer({ boards, selectBoard }: BoardContainerProps) {
           {boards.map((board) => (
             <li
               key={board.id}
-              onClick={() => selectBoard(board)}
-              className="flex flex-row p-2 justify-between border-2 border-[#506FEA] hover:border-[#384ea5] rounded-full cursor-pointer items-center"
+              onClick={() => {
+                selectBoard(board);
+                setSelectedBoardId(board.id);
+              }}
+              className={`flex flex-row p-2 justify-between border-2 rounded-full cursor-pointer items-center 
+                ${selectedBoardId === board.id ? "border-[#FFAA00]" : "border-[#506FEA]"}
+                hover:border-[#384ea5]`}
             >
               <img
                 src={board.emoji}

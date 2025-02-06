@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BoardWithId, Task } from "../../interfaces/types";
 import { DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
@@ -16,44 +16,6 @@ export interface Column {
   color: string;
 }
 
-const initialTasks: Task[] = [
-  {
-    id: "task1",
-    title: "Task 1",
-    status: "In Progress",
-    background: null,
-    tags: [{ tag: "Front-end", color: "#768CE4", colorText: '#455285' }],
-    columnId: "1",
-  },
-  {
-    id: "task2",
-    title: "Task 2",
-    status: "In Review",
-    background: null,
-    tags: [
-      { tag: "Back-end", color: "#FEEF49", colorText: '#7e7625' },
-      { tag: "Front-end", color: "#768CE4", colorText: '#455285'}
-    ],
-    columnId: "3",
-  },
-  {
-    id: "task3",
-    title: "Task 3",
-    status: "In Progress",
-    background: null,
-    tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
-    columnId: "2",
-  },
-  {
-    id: "task4",
-    title: "Task 4",
-    status: "In Progress",
-    background: null,
-    tags: [{ tag: "Design", color: "#D784EA", colorText: '#71467a' }],
-    columnId: "2",
-  },
-];
-
 export function Board({ isSidebarOpen, boardSelected }: BoardProps) {
   const [columns, setColumns] = useState<Column[]>([
     { id: "1", title: "Backlog", color: "#768CE4" },
@@ -61,15 +23,25 @@ export function Board({ isSidebarOpen, boardSelected }: BoardProps) {
     { id: "3", title: "In Review", color: "#D784EA" },
     { id: "4", title: "Completed", color: "#80FA9D" },
   ]);
-
-  const initialTasks2: Task[] = boardSelected.tasks;
-
+  
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  // const [tasks, setTasks] = useState<Task[]>([]);
+  const tasksByBoard = useMemo(() => {
+    return boardSelected.tasks.map((task) => ({ ...task }));
+  }, [boardSelected]);
+  
+  const [tasks, setTasks] = useState<Task[]>(tasksByBoard);
   const tasksIds = useMemo(() => {
     return tasks.map((task) => task.id);
   }, [tasks]);
+  
+  // const taskToDisplay = boardSelected.tasks;
+
+  
+  useEffect(() => {
+    setTasks(tasksByBoard);
+  }, [tasksByBoard]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -128,13 +100,20 @@ export function Board({ isSidebarOpen, boardSelected }: BoardProps) {
     const isOverATask = over.data.current?.type === "Task";
 
     if (isActiveATask && isOverATask) {
-      setTasks((tasks) => {
+      setTasks((prevState) => {
+        const newTasks = [...prevState];
+
         const activeIndex = tasks.findIndex((task) => task.id === activeId);
         const overIndex = tasks.findIndex((task) => task.id === overId);
 
-        tasks[activeIndex].columnId = tasks[overIndex].columnId;
+        if (activeIndex === -1 || overIndex === -1) return newTasks;
+
+        newTasks[activeIndex] = {
+          ...newTasks[activeIndex],
+          columnId: newTasks[overIndex].columnId, 
+        };
         
-        return arrayMove(tasks, activeIndex, overIndex);
+        return arrayMove(newTasks, activeIndex, overIndex);
       });
     }
 
