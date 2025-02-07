@@ -58,7 +58,9 @@ export function Sidebar({
         {isSidebarOpen ? <CancelSvg size={25} /> : <BaselineSvg size={25} />}
       </button>
       <div className="p-4">
-        <div className={`flex flex-col items-center ${!isSidebarOpen && "hidden"}`}>
+        <div
+          className={`flex flex-col items-center ${!isSidebarOpen && "hidden"}`}
+        >
           {isSidebarOpen && (
             <div className="text-2xl font-bold mb-4 text-center mt-10">
               Task Manager
@@ -78,7 +80,7 @@ export function Sidebar({
               </div>
             ))}
           </div>
-          <button 
+          <button
             className="flex flex-row gap-2 justify-center border-2 border-[#42474e] p-2 rounded-full w-full hover:border-[#585f69] hover:shadow-xl cursor-pointer mt-10"
             onClick={() => setIsFormBoardOpen(true)}
           >
@@ -87,15 +89,14 @@ export function Sidebar({
           </button>
         </div>
       </div>
-      {
-        isFormBoardOpen && (
-          <BoardForm
-            handleSubmit={handleSubmit}
-            onClose={() => setIsFormBoardOpen(false)}
-            setEmoji={setEmoji}
-          />
-        )
-      }
+      {isFormBoardOpen && (
+        <BoardForm
+          handleSubmit={handleSubmit}
+          onClose={() => setIsFormBoardOpen(false)}
+          setEmoji={setEmoji}
+          emoji={emoji}
+        />
+      )}
     </div>
   );
 }

@@ -4,11 +4,13 @@ import { CancelSvg, CheckSvg } from "../../assets/svgs/Svg";
 
 interface BoardFormProps {
   handleSubmit: (event: React.FormEvent) => void;
+  emoji: string;
   setEmoji: (emoji: string) => void;
   onClose: () => void;
 }
 
-export function BoardForm({ handleSubmit, setEmoji, onClose }: BoardFormProps) {
+export function BoardForm({ handleSubmit, emoji, setEmoji, onClose }: BoardFormProps) {
+  
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if ((event.target as Element).id === "modal-overlay") {
@@ -26,7 +28,6 @@ export function BoardForm({ handleSubmit, setEmoji, onClose }: BoardFormProps) {
       className="fixed inset-0 flex items-center justify-center bg-[#000000b4]"
     >
       <div className="bg-[#42474e] p-6 rounded-lg shadow-lg relative w-[90%] max-w-[400px] sm:w-[400px]">
-
         <div className="flex flex-col items-center justify-center">
           <h1>New Board</h1>
           <button
@@ -56,10 +57,14 @@ export function BoardForm({ handleSubmit, setEmoji, onClose }: BoardFormProps) {
                 className="flex flex-row"
                 onClick={() => setEmoji(logo)}
               >
-                <img
+                 <img
                   src={logo}
                   alt={logo}
-                  className="w-10 h-10 border-2 border-gray-500 rounded-full hover:border-white hover:border-3"
+                  className={`w-12 h-12 border-3 rounded-full cursor-pointer ${
+                    emoji === logo
+                      ? "border-blue-500 border-4"
+                      : "border-gray-500"
+                  }`}
                 />
               </div>
             ))}

@@ -1,36 +1,81 @@
-import { TaskWithId } from "../../interfaces/types";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  DragOverEvent,
+} from "@dnd-kit/core";
+import { BoardWithId, TaskWithId } from "../../interfaces/types";
 import { TaskCard } from "../task/TaskCard";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useBoardActions } from "../../hooks/useBoardActions";
+import { useEffect, useState } from "react";
 
 interface ColumnContainerProps {
-  tasks: TaskWithId[]
+  tasks: TaskWithId[];
+  selectedBoard: BoardWithId;
 }
 
 const columns = [
-  { id: "backlog", title: "Backlog", status: "backlog" },
-  { id: "in-process", title: "In Process", status: "in-process" },
-  { id: "in-preview", title: "In Preview", status: "in-preview" },
-  { id: "completed", title: "Completed", status: "completed" },
+  { id: "backlog", title: "Backlog", status: "backlog", color: "#768CE4" },
+  {
+    id: "in-process",
+    title: "In Process",
+    status: "in-process",
+    color: "#FEEF49",
+  },
+  {
+    id: "in-preview",
+    title: "In Preview",
+    status: "in-preview",
+    color: "#D784EA",
+  },
+  {
+    id: "completed",
+    title: "Completed",
+    status: "completed",
+    color: "#80FA9D",
+  },
 ];
 
-export function ColumnContainer({ tasks }: ColumnContainerProps) {
+export function ColumnContainer({
+  tasks,
+  selectedBoard,
+}: ColumnContainerProps) {
+
+  const [newTasks, setNewTasks] = useState(tasks);
+
+  useEffect(() => {
+    setNewTasks(tasks);
+  }, [tasks])
+
+
+  const { updateBoard } = useBoardActions();
+
+  const onDragEnd = (event: DragEndEvent) => {
+
+    const { active, over } = event;
+
+    const oldIndex = newTasks.findIndex((task) => task.id === active.id);
+    const newIndex = newTasks.findIndex((task) => task.id === over?.id);
+
+    if (oldIndex === newIndex) return;
+
+    const newOrder = arrayMove(newTasks, oldIndex, newIndex);
+    setNewTasks(newOrder);
+    console.log(newOrder);
+  };
+  
+
   return (
-    <div className="flex flex-row gap-5 w-full items-center justify-center text-center">
-            {columns.map((column) => (
-              <div
-                key={column.id}
-                className="w-70 border-2 rounded-xl border-[#] h-[600px] overflow-y-auto flex flex-col gap-3 items-center p-2"
-              >
-                <h1 className="p-2 font-bold">{column.title}</h1>
-                {tasks
-                  .filter(
-                    (task) =>
-                      task.status === column.status || task.columnId === column.id
-                  )
-                  .map((task) => (
-                    <TaskCard key={task.id} task={task} />
-                  ))}
-              </div>
-            ))}
-          </div>
-  )
+    <DndContext
+      collisionDetection={closestCenter}
+      onDragEnd={onDragEnd}
+    >
+      
+    </DndContext>
+  );
 }

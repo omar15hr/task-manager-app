@@ -24,7 +24,6 @@ export function TaskForm({ handleSubmitTask, onClose }: TaskFormProps) {
       className="fixed h-screen sm:h-auto inset-0 flex items-center justify-center bg-[#000000b4] z-10"
     >
       <div className="bg-[#42474e] p-6 rounded-lg shadow-lg relative w-[90%] max-w-[400px] sm:w-[400px] mr-4">
-
         <div className="flex flex-col items-center justify-center">
           <h1>Task Details</h1>
           <button
@@ -34,10 +33,7 @@ export function TaskForm({ handleSubmitTask, onClose }: TaskFormProps) {
             <CancelSvg size={25} />
           </button>
         </div>
-        <form
-          onSubmit={handleSubmitTask}
-          className="flex flex-col p-4"
-        >
+        <form onSubmit={handleSubmitTask} className="flex flex-col p-4">
           <label htmlFor="title" className="text-[#98a3b3]">
             Background
           </label>
@@ -90,10 +86,10 @@ export function TaskForm({ handleSubmitTask, onClose }: TaskFormProps) {
             <option value="back-end" className="bg-[#383c42]">
               Back-end
             </option>
-            <option value="back-end" className="bg-[#383c42]">
+            <option value="design" className="bg-[#383c42]">
               Design
             </option>
-            <option value="back-end" className="bg-[#383c42]">
+            <option value="personal" className="bg-[#383c42]">
               Personal
             </option>
           </select>
