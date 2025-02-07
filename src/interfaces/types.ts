@@ -1,24 +1,14 @@
-export type BoardId = string;
-export type TaskId = string;
+export type ColumnId = string | number;
+export type TaskId = string | number;
 
-export interface Board {
-  name: string;
-  emoji: string;
-  tasks: TaskWithId[];
-}
-
-export interface BoardWithId extends Board {
-  id: BoardId;
-}
-
-export interface TaskWithId extends Task {
-  id: TaskId;
+export type Column = {
+  id: ColumnId;
+  title: string;
 }
 
 export interface Task {
+  id: TaskId;
+  columnId: ColumnId;
   title: string;
-  status: string;
-  background: string | null;
-  tag: string;
-  columnId: string;
+  content: string;
 }
