@@ -6,7 +6,13 @@ import { Board } from "./components/board/Board";
 
 export default function App() {
   const boards = useAppSelector((state) => state.boards);
+
   const [selectedBoard, setSelectedBoard] = useState<BoardWithId | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+
+  const handleToggleSidebar = (isOpen: boolean) => {
+    setIsSidebarOpen(isOpen);
+  };
 
   useEffect(() => {
     if (selectedBoard) {
@@ -23,8 +29,16 @@ export default function App() {
 
   return (
     <div className="flex flex-row h-[100vh]">
-      <Sidebar boards={boards} setSelectedBoard={setSelectedBoard} />
-      <Board tasks={tasks} selectedBoard={selectedBoard} />
+      <Sidebar
+        boards={boards}
+        setSelectedBoard={setSelectedBoard}
+        onToggleSidebar={handleToggleSidebar}
+      />
+      <Board
+        tasks={tasks}
+        selectedBoard={selectedBoard}
+        isSidebarOpen={isSidebarOpen}
+      />
     </div>
   );
 }

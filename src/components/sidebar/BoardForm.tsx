@@ -2,10 +2,10 @@ import logos from '../../assets/emojis/logos';
 
 interface BoardFormProps {
   handleSubmit: (event: React.FormEvent) => void;
+  setEmoji: (emoji: string) => void;
 }
-console.log(logos);
 
-export function BoardForm({ handleSubmit }: BoardFormProps) {
+export function BoardForm({ handleSubmit, setEmoji }: BoardFormProps) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col bg-gray-800 p-4">
       <label htmlFor="name">Name</label>
@@ -18,16 +18,15 @@ export function BoardForm({ handleSubmit }: BoardFormProps) {
       <label htmlFor="emoji" className="mt-5">
         Emoji
       </label>
-      <select
-        name="emoji"
-        className="border-2 border-gray-500 rounded-full p-2"
+      <div
+        className="border-2 border-gray-500 rounded-full p-2 bg-no-repeat"
       >
         {logos.map((logo) => (
-          <option key={logo} value={logo}>
-            {logo}
-          </option>
+          <div key={logo} className='flex flex-row justify-center' onClick={() => setEmoji(logo)}>
+            <img src={logo} alt={logo} className="w-8 h-8 border-2 border-gray-500 rounded-full hover:border-white hover:border-3" />
+          </div>
         ))}
-      </select>
+      </div>
 
       <button type="submit" className="p-2 rounded-full bg-gray-400 mt-4">
         Save

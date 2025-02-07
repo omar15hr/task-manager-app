@@ -4,12 +4,12 @@ import { BoardWithId, TaskWithId } from "../../interfaces/types";
 interface BoardProps {
   selectedBoard: BoardWithId | null;
   tasks: TaskWithId[];
+  isSidebarOpen: boolean;
 }
 
-export function Board({ selectedBoard, tasks }: BoardProps) {
+export function Board({ selectedBoard, tasks, isSidebarOpen }: BoardProps) {
 
-    const { addTask } = useBoardActions();
-  
+  const { addTask } = useBoardActions();
 
   const handleSubmitTask = (event: React.FormEvent) => {
     event.preventDefault();
