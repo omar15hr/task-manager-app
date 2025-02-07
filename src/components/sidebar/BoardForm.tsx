@@ -2,10 +2,11 @@ import logos from '../../assets/emojis/logos';
 
 interface BoardFormProps {
   handleSubmit: (event: React.FormEvent) => void;
+  isFormBoardOpen: boolean;
   setEmoji: (emoji: string) => void;
 }
 
-export function BoardForm({ handleSubmit, setEmoji }: BoardFormProps) {
+export function BoardForm({ handleSubmit, setEmoji, isFormBoardOpen }: BoardFormProps) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col bg-gray-800 p-4">
       <label htmlFor="name">Name</label>

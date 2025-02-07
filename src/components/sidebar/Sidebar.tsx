@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useBoardActions } from "../../hooks/useBoardActions";
 import { BoardWithId } from "../../interfaces/types";
 import { BoardForm } from "./BoardForm";
-import { BaselineSvg, CancelSvg } from "../../assets/svgs/Svg";
+import { BaselineSvg, CancelSvg, CirclePlusSvg } from "../../assets/svgs/Svg";
 
 interface SidebarProps {
   boards: BoardWithId[];
@@ -10,10 +10,15 @@ interface SidebarProps {
   onToggleSidebar: (isOpen: boolean) => void;
 }
 
-export function Sidebar({ boards, setSelectedBoard, onToggleSidebar }: SidebarProps) {
-
+export function Sidebar({
+  boards,
+  setSelectedBoard,
+  onToggleSidebar,
+}: SidebarProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [emoji, setEmoji] = useState<string>("");
+  const [isFormBoardOpen, setIsFormBoardOpen] = useState<boolean>(false);
+
   const { addBoard } = useBoardActions();
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -38,18 +43,22 @@ export function Sidebar({ boards, setSelectedBoard, onToggleSidebar }: SidebarPr
     <div
       className={`fixed sm:relative h-screen sm:h-auto z-10 ${
         isSidebarOpen ? "w-80" : "w-20"
-      } transition-all duration-300 ease-in-out bg-gray-800 text-white`}
+      } transition-all duration-300 ease-in-out bg-[#2A2D32] text-white`}
     >
       <button
         onClick={toggleSidebar}
-        className={`flex p-2 absolute top-2 w-full ${ isSidebarOpen ? 'justify-end' : 'justify-center'}`}
+        className={`flex p-2 absolute top-2 w-full ${
+          isSidebarOpen ? "justify-end" : "justify-center"
+        }`}
       >
         {isSidebarOpen ? <CancelSvg size={25} /> : <BaselineSvg size={25} />}
       </button>
       <div className="p-4">
         <div className="flex flex-col items-center">
           {isSidebarOpen && (
-            <div className="text-2xl font-bold mb-4 text-center">Task Manager</div>
+            <div className="text-2xl font-bold mb-4 text-center">
+              Task Manager
+            </div>
           )}
           <div className="flex flex-col gap-2 w-full">
             {boards.map((board) => (
@@ -65,9 +74,24 @@ export function Sidebar({ boards, setSelectedBoard, onToggleSidebar }: SidebarPr
               </div>
             ))}
           </div>
+          <button 
+            className="flex flex-row gap-2 justify-center border-2 border-[#42474e] p-2 rounded-full w-full hover:border-[#585f69] hover:shadow-xl cursor-pointer"
+            onClick={() => setIsFormBoardOpen(true)}
+          >
+            <CirclePlusSvg size={25} />
+            <span>Add new board</span>
+          </button>
         </div>
       </div>
-      {/* <BoardForm handleSubmit={handleSubmit} setEmoji={setEmoji} /> */}
+      {
+        isFormBoardOpen && (
+          <BoardForm
+            handleSubmit={handleSubmit}
+            setEmoji={setEmoji}
+            isFormBoardOpen={isFormBoardOpen}
+          />
+        )
+      }
     </div>
   );
 }
