@@ -25,7 +25,8 @@ export function BoardForm({ handleSubmit, setEmoji, onClose }: BoardFormProps) {
       id="modal-overlay"
       className="fixed inset-0 flex items-center justify-center bg-[#000000b4]"
     >
-      <div className="bg-[#42474e] p-6 rounded-lg shadow-lg relative w-[400px]">
+      <div className="bg-[#42474e] p-6 rounded-lg shadow-lg relative w-[90%] max-w-[400px] sm:w-[400px]">
+
         <div className="flex flex-col items-center justify-center">
           <h1>New Board</h1>
           <button

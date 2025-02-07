@@ -21,9 +21,10 @@ export function TaskForm({ handleSubmitTask, onClose }: TaskFormProps) {
   return (
     <div
       id="modal-overlay"
-      className="fixed inset-0 flex items-center justify-center bg-[#000000b4]"
+      className="fixed h-screen sm:h-auto inset-0 flex items-center justify-center bg-[#000000b4] z-10"
     >
-      <div className="bg-[#42474e] p-6 rounded-lg shadow-lg relative w-[400px]">
+      <div className="bg-[#42474e] p-6 rounded-lg shadow-lg relative w-[90%] max-w-[400px] sm:w-[400px] mr-4">
+
         <div className="flex flex-col items-center justify-center">
           <h1>Task Details</h1>
           <button
