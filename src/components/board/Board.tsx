@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { useBoardActions } from "../../hooks/useBoardActions";
 import { BoardWithId, TaskWithId } from "../../interfaces/types";
+import { TaskForm } from "../task/TaskForm";
+import { PlusSvg } from "../../assets/svgs/Svg";
+import { StartBoard } from "./StartBoard";
 
 interface BoardProps {
   selectedBoard: BoardWithId | null;
@@ -8,6 +12,7 @@ interface BoardProps {
 }
 
 export function Board({ selectedBoard, tasks, isSidebarOpen }: BoardProps) {
+  const [isFormTaskOpen, setIsFormTaskOpen] = useState<boolean>(false);
 
   const { addTask } = useBoardActions();
 
@@ -23,6 +28,9 @@ export function Board({ selectedBoard, tasks, isSidebarOpen }: BoardProps) {
     const tag = formData.get("tag") as string;
     const columnId = selectedBoard!.id;
 
+    if (!selectedBoard) return;
+    if (!title || !status || !tag) return;
+
     addTask({
       id: crypto.randomUUID(),
       title,
@@ -31,62 +39,42 @@ export function Board({ selectedBoard, tasks, isSidebarOpen }: BoardProps) {
       tag,
       columnId,
     });
+
+    form.reset();
+    setIsFormTaskOpen(false);
   };
 
   return (
-    <div className="w-4/5 flex justify-center bg-gray-700 p-4">
-        <div className="flex flex-col">
-          {tasks.map((task) => (
-            <div key={task.id} className="flex bg-gray-700 rounded-full p-4">
-              {task.title}
-            </div>
-          ))}
-        </div>
-        <form
-          onSubmit={handleSubmitTask}
-          className="flex flex-col bg-gray-800 p-4"
-        >
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            name="title"
-            className="border-2 border-gray-500 rounded-full p-1 text-white"
-          />
-
-          <label htmlFor="status" className="mt-5">
-            Status
-          </label>
-          <select
-            name="status"
-            className="border-2 border-gray-500 rounded-full p-2"
-          >
-            <option value="backlog" className="bg-gray-700">
-              Backlog
-            </option>
-            <option value="completed" className="bg-gray-700">
-              Completed
-            </option>
-          </select>
-
-          <label htmlFor="tag" className="mt-5">
-            Tag
-          </label>
-          <select
-            name="tag"
-            className="border-2 border-gray-500 rounded-full p-2"
-          >
-            <option value="front-end" className="bg-gray-700">
-              Front-end
-            </option>
-            <option value="back-end" className="bg-gray-700">
-              Back-end
-            </option>
-          </select>
-
-          <button type="submit" className="p-2 rounded-full bg-gray-400 mt-4">
-            Save
-          </button>
-        </form>
+    <div
+      className={`transition-all duration-300 h-screen sm:h-auto flex-1 bg-[#191B1F] ${
+        isSidebarOpen ? "ml-1" : "ml-1"
+      }`}
+    >
+      <div className="flex flex-col">
+        {tasks.map((task) => (
+          <div key={task.id} className="flex bg-gray-700 rounded-full p-4">
+            {task.title}
+          </div>
+        ))}
       </div>
-  )
+      {selectedBoard ? (
+        <button
+          className="flex flex-row gap-2 border-2 border-[#42474e] p-2 rounded-full w-50 h-12 hover:border-[#585f69] hover:shadow-xl cursor-pointer mt-10 items-center justify-center ml-5"
+          onClick={() => setIsFormTaskOpen(true)}
+        >
+          <PlusSvg size={25} />
+          <span>Add new board</span>
+        </button>
+      ) : (
+        <StartBoard />
+      )}
+
+      {isFormTaskOpen && (
+        <TaskForm
+          handleSubmitTask={handleSubmitTask}
+          onClose={() => setIsFormTaskOpen(false)}
+        />
+      )}
+    </div>
+  );
 }
